@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Satu Visual Indonesia — Broadcast, Live Streaming &amp; Pro AV Solutions</title>
+<title>Satu Visual Indonesia — NDI®, Broadcast &amp; Pro AV Solutions</title>
 <meta name="description" content="Satu Visual Indonesia is an NDI®-focused distributor and solutions partner for Telycam, Magewell and CNDLive — helping churches, studios and campuses move from HDMI and SDI to IP video.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -115,6 +115,9 @@
   /* Drawer / modal */
   .overlay { transition: opacity .25s ease; }
   .drawer { transition: transform .35s cubic-bezier(.2,.8,.2,1); }
+  /* Closed dialogs must not block clicks or receive keyboard focus */
+  #quoteDrawer, #productModal { visibility: visible; transition: visibility 0s; }
+  #quoteDrawer[data-open="false"], #productModal[data-open="false"] { pointer-events: none; visibility: hidden; transition: visibility 0s linear .35s; }
   [data-open="false"] .overlay { opacity: 0; pointer-events: none; }
   [data-open="false"] .drawer { transform: translateY(105%); }
   @media (min-width: 640px) { [data-open="false"] .drawer { transform: translateX(105%); } }
@@ -1223,8 +1226,8 @@
   var PAGES = ['home', 'ndi', 'about', 'projects', 'news', 'contact', 'privacy'];
   var TITLES = { home: 'Satu Visual Indonesia — NDI®, Broadcast & Pro AV Solutions', ndi: 'NDI® Solutions — Satu Visual Indonesia', about: 'About — Satu Visual Indonesia', projects: 'Projects — Satu Visual Indonesia', news: 'News & Events — Satu Visual Indonesia', contact: 'Contact — Satu Visual Indonesia', privacy: 'Privacy Policy — Satu Visual Indonesia' };
   var first = true;
-  function route() {
-    var page = (location.hash || '').replace('#', '');
+  function route(forced) {
+    var page = typeof forced === 'string' ? forced : (location.hash || '').replace('#', '');
     if (PAGES.indexOf(page) === -1) page = 'home';
     $$('.page').forEach(function (s) { s.classList.toggle('is-active', s.getAttribute('data-page') === page); });
     $$('.nav-link').forEach(function (a) {
@@ -1336,6 +1339,7 @@
   syncThemeButton();
   route();
   window.addEventListener('hashchange', route);
+  window.addEventListener('popstate', function () { route(); });
 
   /* =========================================================
      MOTION
@@ -1398,6 +1402,18 @@
 
   // Delegated clicks
   document.addEventListener('click', function (e) {
+    // In-page navigation: switch pages directly so menus work even where hash changes are blocked
+    var nav = e.target.closest('a[href^="#"]');
+    if (nav) {
+      var target = nav.getAttribute('href').slice(1);
+      if (PAGES.indexOf(target) !== -1) {
+        e.preventDefault();
+        if (location.hash !== '#' + target) { try { history.pushState(null, '', '#' + target); } catch (err) {} }
+        route(target);
+        setTimeout(onScroll, 50);
+        return;
+      }
+    }
     var q = e.target.closest('[data-open-quote]');
     if (q) { e.preventDefault(); openQuote(q.getAttribute('data-quote-product') || ''); return; }
     var p = e.target.closest('[data-product]');
