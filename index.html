@@ -116,8 +116,10 @@
   .overlay { transition: opacity .25s ease; }
   .drawer { transition: transform .35s cubic-bezier(.2,.8,.2,1); }
   /* Closed dialogs must not block clicks or receive keyboard focus */
-  #quoteDrawer, #productModal { visibility: visible; transition: visibility 0s; }
-  #quoteDrawer[data-open="false"], #productModal[data-open="false"] { pointer-events: none; visibility: hidden; transition: visibility 0s linear .35s; }
+  #quoteDrawer, #productModal, #lightbox { visibility: visible; transition: visibility 0s; }
+  #quoteDrawer[data-open="false"], #productModal[data-open="false"], #lightbox[data-open="false"] { pointer-events: none; visibility: hidden; transition: visibility 0s linear .35s; }
+  #lightbox .lb-stage { transition: opacity .25s ease; }
+  #lightbox[data-open="false"] .lb-stage { opacity: 0; }
   [data-open="false"] .overlay { opacity: 0; pointer-events: none; }
   [data-open="false"] .drawer { transform: translateY(105%); }
   @media (min-width: 640px) { [data-open="false"] .drawer { transform: translateX(105%); } }
@@ -904,6 +906,23 @@
   </div>
 </div>
 
+<!-- ================= PROJECT PHOTO GALLERY ================= -->
+<div id="lightbox" data-open="false" class="fixed inset-0 z-[75]" aria-hidden="true">
+  <div class="overlay absolute inset-0" style="background: rgba(4, 7, 12, 0.96)" data-close-lightbox></div>
+  <div class="lb-stage absolute inset-0 flex flex-col" role="dialog" aria-modal="true" aria-labelledby="lbTitle">
+    <div class="relative z-10 flex items-center justify-between gap-4 px-5 pt-5 text-white" style="padding-top: calc(20px + env(safe-area-inset-top, 0px))">
+      <div><p id="lbTitle" class="display text-[18px] font-bold"></p><p id="lbCount" class="text-[14px] text-white/70"></p></div>
+      <button type="button" class="grid h-11 w-11 flex-none place-items-center rounded-full bg-white/10 hover:bg-white/20" data-close-lightbox aria-label="Close gallery"><i data-lucide="x" class="h-5 w-5"></i></button>
+    </div>
+    <div class="relative flex min-h-0 flex-1 items-center justify-center px-4 py-5 sm:px-20">
+      <img id="lbImg" class="max-h-full max-w-full rounded-xl object-contain" alt="">
+      <p id="lbFail" class="hidden max-w-sm text-center text-[15px] text-white/80">This photo can’t load here. <a id="lbDrive" href="#" target="_blank" rel="noopener" class="font-semibold text-white underline">Open it in Google Drive</a></p>
+      <button type="button" id="lbPrev" class="absolute left-3 top-1/2 grid h-12 w-12 -translate-y-1/2 place-items-center rounded-full bg-white/10 text-white hover:bg-white/20 sm:left-6" aria-label="Previous photo"><i data-lucide="chevron-left" class="h-6 w-6"></i></button>
+      <button type="button" id="lbNext" class="absolute right-3 top-1/2 grid h-12 w-12 -translate-y-1/2 place-items-center rounded-full bg-white/10 text-white hover:bg-white/20 sm:right-6" aria-label="Next photo"><i data-lucide="chevron-right" class="h-6 w-6"></i></button>
+    </div>
+  </div>
+</div>
+
 <!-- ================= PRODUCT DETAIL MODAL ================= -->
 <div id="productModal" data-open="false" class="fixed inset-0 z-[65]" aria-hidden="true">
   <div class="overlay absolute inset-0 bg-black/60" data-close-product></div>
@@ -920,7 +939,7 @@
      CONFIG
      ========================================================= */
   var WA_NUMBER = '628118047717';
-  var CATEGORIES = ['House of Worship', 'Broadcast', 'Live Streaming', 'Corporate', 'Education', 'E-commerce'];
+  var CATEGORIES = ['House of Worship', 'Education', 'Government', 'Broadcast', 'Live Streaming', 'Corporate', 'E-commerce'];
 
   /* =========================================================
      PRODUCT ILLUSTRATIONS (line art, inherits currentColor)
@@ -1122,12 +1141,22 @@
   var YT_CHANNEL = 'https://www.youtube.com/channel/UCHQgXBd3UPEv_3BppQFxrHw';
 
   /* Replace with real project references */
-  /* Project references (from Satu Visual and Johan Zhang LinkedIn posts, and Telycam) */
+  /* Project references. photos = Google Drive file IDs from Satu Visual's shared documentation folder
+     (folder must stay shared as "Anyone with the link"). For production, copy the photos into the site and use local paths. */
   var PROJECTS = [
+    { cat: 'House of Worship', client: 'GBSI Lippo', place: '[City], 2022', desc: '[Short description of the setup]', gear: '[Gear used]', photos: ['1lSKXlhkcdb240bxwWGXG45m5uyycJK83', '1dmj6_IBECUAjXkzxnam1126CN3Te5JO9', '1fR9uJ20FhMmzB2Jxqb6q41t3lojPRLed', '1z6Wt7JKKIM93KfuMf79wRu04fveEqQOq', '1tbvxv3CsNNK4b_UeLEhNf6kFcDVXu4xS'] },
+    { cat: 'Education', client: 'Universitas Padjadjaran', place: 'West Java, 2023', desc: 'NDI|HX3 PTZ cameras with an NDI\u00ae controller keyboard \u2014 the project that led Telycam to partner with Satu Visual. Photos include the university\u2019s graduation ceremony.', gear: 'Telycam NDI|HX3 PTZ cameras, TLC-50TC (NDI) controller', src: 'https://telycam.com/telycams-new-partnership-with-satu-visual-indonesia.html', srcLabel: 'Read Telycam\u2019s story', photos: ['1ktHQFF__eTRdU37B6eM47oYOEM7pxxne', '1ZHT6gPJIROAlGGvyswqTZvDs_tTudo8R'] },
+    { cat: 'Government', client: 'Ministry of Health (Kemenkes)', place: 'Jakarta, 2023', desc: '[Short description of the setup]', gear: '[Gear used]', photos: ['1PjEPK7cFLXMvcYKwtJEMSstY_18GKCns', '1YTnaSsTdxvB3GmQgaE5p_oEu-l9DdXY7', '1_mEDW9bW23vaqrZ0LT9qU28FKJR4tulG', '1gm-qg90ySdCNvE8Xa1EN44Ycx222VNPH', '17YdH3n_AXJTWb78mrZkmVSulIcHRnfGs', '15odV5JnrvAISRhXiG570RtqZcwvRFDhK', '1Gi_ET9xs3X_4KFVCqSa1i_fE-QnePem7', '1-iCX0-Tgbo51TPljLsjZblg0X72PGy7y', '1gd_AIUA0iKSAQ5wGl8MVqh-O0fJmUZDW'] },
+    { cat: 'House of Worship', client: 'Gereja Keluarga Kristus', place: '[City], 2023', desc: '[Short description of the setup]', gear: '[Gear used]', photos: ['1rfr-NyL2yKxI0dF7uTcQijmfgOfDVhjJ', '1bGg1gukQHBEnvaVQeBeB6Cn003BLpavD', '1499CZefcfv9iArhPNHc39_mC3EiqB6_u', '1tz_WXpkQH6p6lenid1kvZt7NgVgPa2M3', '1-u3emhpG3eaKNlHZV4TNU1VVp44MrN0K', '1vXlNbTHJlTryMDK14tcdWH89SYjTGr6s'] },
+    { cat: 'Education', client: 'Atma Jaya', place: 'Jakarta, 2024', desc: '[Short description of the setup]', gear: '[Gear used]', photos: ['1KThZie3hoS8vaEIoD9wUEZs493Nupk1Q', '1SpuTBbFHJW9rlbCF4TgWBIrnbn2dgHdw', '1eEIhRvh7kP5CevS5jqXD63Lp1YxNORzR'] },
+    { cat: 'Broadcast', client: 'JakTV & NTMC', place: 'Jakarta, 2022', desc: '[Short description of the setup]', gear: '[Gear used]', photos: ['1oN4yaZoGo_M-64ZFIia-vIZ5hxSRywvr', '1Ck0aR3zaANvgELBmWqEpuATBjGU9kMtj', '1NuyA-DQ8WjfE4tldKmcrMMkDZ1fLGMqs', '1pyLLaYM4iLC6Ryj3C7O8q15L_J4CrynD', '1f1jKJVJ-OQKfQRr1Pw0INbTufEx6GBkf'] },
     { cat: 'House of Worship', client: 'Toraja Church Kelapa Gading', place: 'Kelapa Gading, Jakarta', desc: 'Wide-area PTZ coverage for a large sanctuary, with enough detail for the LED wall. Cameras run on an NDI\u00ae network, and the FOH operator controls them directly from a StreamDock.', gear: 'Telycam Vision+ SE (4K, 12\u00d7 zoom), MiraBox StreamDock', src: 'https://www.linkedin.com/company/satuvisual', srcLabel: 'See on LinkedIn' },
     { cat: 'House of Worship', client: 'GPJ Syalom', place: '[City]', desc: 'Auto-tracking PTZ cameras with centralised control from the FOH. The NDI\u00ae workflow runs over a single LAN cable and ties into the church\u2019s existing setup.', gear: 'Telycam Vision+ SE (auto-tracking), V-Joy+ AT PTZ controller', src: 'https://www.linkedin.com/company/satuvisual', srcLabel: 'See on LinkedIn' },
-    { cat: 'Education', client: 'Universitas Padjadjaran', place: 'West Java', desc: 'NDI|HX3 PTZ cameras with an NDI\u00ae controller keyboard \u2014 the project that led Telycam to partner with Satu Visual.', gear: 'Telycam NDI|HX3 PTZ cameras, TLC-50TC (NDI) controller', src: 'https://telycam.com/telycams-new-partnership-with-satu-visual-indonesia.html', srcLabel: 'Read Telycam\u2019s story' },
+    { cat: 'House of Worship', client: 'HKBP Taman Mini', place: 'East Jakarta, 2026', desc: '[Short description of the setup]', gear: '[Gear used]', photos: ['16QKKKfOP4mKijXI3-wKc1VjvMbRdX8ri', '1bOgf7OUwaSQsJJ1elq1k8hM5CQFNiTYh'] },
+    { cat: 'House of Worship', client: 'GBIA', place: '[City], 2023', desc: '[Short description of the setup]', gear: '[Gear used]', photos: ['1NmXRIE-KmXU6eURfMwPpBN4n7rtrW80N', '1nFpRAtpqpuSway9maE_BsVPW8p1A_ydq', '1O6pJHu5csehTDLsEneulg3nxhCaBk4s3', '1aNwTd9Y_-GgvkbztkTa1oWJA-9V3exmD'] },
     { cat: 'Broadcast', client: 'Berita Jakarta', place: 'Jakarta', desc: 'A studio NDI\u00ae workflow: three encoders turn camera signals into NDI\u00ae with minimal cabling, two decoders feed displays, and production runs in vMix.', gear: 'Kiloview U40 encoders (3), Kiloview N4 decoders (2), vMix', src: 'https://www.linkedin.com/company/satuvisual', srcLabel: 'See on LinkedIn' },
+    { cat: 'Live Streaming', client: 'Live stream from a boat', place: '[City], 2022', desc: 'A remote live stream from the water, using a bonding encoder on board and a decoder at the receiving end.', gear: 'Kiloview P2 bonding encoder, Kiloview DC230 decoder', photos: ['1lsOK9l2DcljoPp4UA9j2qS28rl3R5-WV', '16X6n3s5TKbi1ExzT_c1wP743c8KOe7yX', '1ogGZedfn7jeHjziQyz8wmBcyHxqbEV6I'] },
+    { cat: '[Category]', client: '[Client name]', place: 'Batam, 2025', desc: '[Short description of the setup]', gear: '[Gear used]', photos: ['1Zg1AyTFIuSRRtvOwnRkwb6f6B5g2oV76', '1Oh8V4HBESGDFYUw1Xy2Etv8ZqZlxwvm_', '18_dY-HX0Nyu3_nHpgKsMaFgevxb0C9sj', '1LzXpUAWg3fB3vFCyraZIe51PeJP5AbDT', '1hrNEdGre_5PjWA1RKFaNwdVZ2cImGBs_'] },
     { cat: 'Corporate', client: '[Client name]', place: '[City]', desc: 'Three meeting rooms brought together into one integrated AV system.', gear: '[Gear used]', src: 'https://www.linkedin.com/company/satuvisual', srcLabel: 'See on LinkedIn' },
     { cat: '[Category]', client: '[Venue name]', place: '[City]', desc: 'A long-zoom PTZ installation with a stabiliser and adapter plate to keep the camera secure and reduce vibration in the image.', gear: 'Telycam Vision+ 4KN 30\u00d7, V-19 stabiliser, C-21 adapter plate', src: 'https://www.linkedin.com/company/satuvisual', srcLabel: 'See on LinkedIn' }
   ];
@@ -1300,13 +1329,17 @@
   /* =========================================================
      PROJECTS
      ========================================================= */
-  var CAT_ICON = { 'House of Worship': 'church', 'Broadcast': 'tv', 'Live Streaming': 'radio', 'Corporate': 'building-2', 'Education': 'graduation-cap', 'E-commerce': 'shopping-bag' };
+  var CAT_ICON = { 'House of Worship': 'church', 'Government': 'landmark', 'Broadcast': 'tv', 'Live Streaming': 'radio', 'Corporate': 'building-2', 'Education': 'graduation-cap', 'E-commerce': 'shopping-bag' };
+  function driveThumb(id, w) { return 'https://drive.google.com/thumbnail?id=' + encodeURIComponent(id) + '&sz=w' + w; }
   function projectCard(p) {
+    var i = PROJECTS.indexOf(p), n = p.photos ? p.photos.length : 0;
     return '<article class="tile swap-in flex flex-col overflow-hidden">' +
       '<div class="relative aspect-[4/3] bg-surface2">' +
         '<span class="raster absolute inset-0" aria-hidden="true"></span>' +
-        '<span class="absolute inset-0 grid place-items-center text-[13px] text-muted">[Project photo]</span>' +
-        '<span class="absolute left-4 top-4 inline-flex items-center gap-1.5 rounded-full bg-surface px-3 py-1.5 text-[13px] font-medium"><i data-lucide="' + (CAT_ICON[p.cat] || 'video') + '" class="h-3.5 w-3.5"></i>' + esc(p.cat) + '</span>' +
+        '<span class="absolute inset-0 grid place-items-center text-[13px] text-muted">' + (n ? 'Project photo' : '[Project photo]') + '</span>' +
+        (n ? '<img src="' + driveThumb(p.photos[0], 900) + '" alt="' + esc(p.client) + '" loading="lazy" referrerpolicy="no-referrer" class="proj-img absolute inset-0 h-full w-full cursor-zoom-in object-cover" data-gallery="' + i + '">' +
+             '<button type="button" data-gallery="' + i + '" class="absolute bottom-4 right-4 z-10 inline-flex min-h-[36px] items-center gap-1.5 rounded-full bg-black/65 px-3 py-1.5 text-[13px] font-semibold text-white backdrop-blur hover:bg-black/80"><i data-lucide="images" class="h-4 w-4"></i>' + n + (n === 1 ? ' photo' : ' photos') + '</button>' : '') +
+        '<span class="absolute left-4 top-4 z-10 inline-flex items-center gap-1.5 rounded-full bg-surface px-3 py-1.5 text-[13px] font-medium"><i data-lucide="' + (CAT_ICON[p.cat] || 'video') + '" class="h-3.5 w-3.5"></i>' + esc(p.cat) + '</span>' +
       '</div>' +
       '<div class="flex flex-1 flex-col gap-2 p-6">' +
         '<span class="text-[14px] text-muted">' + esc(p.place) + '</span>' +
@@ -1316,9 +1349,33 @@
         (p.src ? '<a href="' + esc(p.src) + '" target="_blank" rel="noopener" class="inline-flex items-center gap-1.5 self-start py-1 text-[14px] font-medium text-accentink">' + esc(p.srcLabel || 'Read more') + ' <i data-lucide="external-link" class="h-3.5 w-3.5"></i></a>' : '') +
       '</div></article>';
   }
+  /* Hide photos that fail to load (e.g. blocked previews) so the placeholder shows instead */
+  function wireProjectImages(root) {
+    $$('img.proj-img', root).forEach(function (img) {
+      if (img.complete && !img.naturalWidth) { img.remove(); return; }
+      img.addEventListener('error', function () { img.remove(); });
+    });
+  }
+  /* Gallery */
+  var lb = { p: 0, k: 0 };
+  function showLb() {
+    var p = PROJECTS[lb.p], id = p.photos[lb.k], img = $('#lbImg');
+    $('#lbTitle').textContent = p.client;
+    $('#lbCount').textContent = (lb.k + 1) + ' / ' + p.photos.length;
+    $('#lbDrive').href = 'https://drive.google.com/file/d/' + id + '/view';
+    $('#lbFail').classList.add('hidden'); img.classList.remove('hidden');
+    img.alt = p.client + ', photo ' + (lb.k + 1);
+    img.onerror = function () { img.classList.add('hidden'); $('#lbFail').classList.remove('hidden'); };
+    img.src = driveThumb(id, 2000);
+    var multi = p.photos.length > 1;
+    $('#lbPrev').classList.toggle('hidden', !multi); $('#lbNext').classList.toggle('hidden', !multi);
+  }
+  function openGallery(i) { lb.p = i; lb.k = 0; showLb(); openLayer($('#lightbox'), 'button[data-close-lightbox]'); }
+  function stepLb(d) { var n = PROJECTS[lb.p].photos.length; lb.k = (lb.k + d + n) % n; showLb(); }
   function renderProjects(cat) {
     var list = cat === 'All' ? PROJECTS : PROJECTS.filter(function (p) { return p.cat === cat; });
     $('#projectGrid').innerHTML = list.length ? list.map(projectCard).join('') : '<p class="text-muted">No projects in this category yet.</p>';
+    wireProjectImages($('#projectGrid'));
     $$('#projectFilters button').forEach(function (b) { b.setAttribute('aria-pressed', String(b.textContent === cat)); });
     icons();
   }
@@ -1423,7 +1480,7 @@
   function closeLayer(el) {
     el.setAttribute('data-open', 'false');
     el.setAttribute('aria-hidden', 'true');
-    if ($('#quoteDrawer').getAttribute('data-open') !== 'true' && $('#productModal').getAttribute('data-open') !== 'true') document.body.style.overflow = '';
+    if (!document.querySelector('#quoteDrawer[data-open="true"], #productModal[data-open="true"], #lightbox[data-open="true"]')) document.body.style.overflow = '';
     if (lastFocus && lastFocus.focus) lastFocus.focus();
   }
   function trapFocus(layer, e) {
@@ -1577,6 +1634,7 @@
   renderTelycam('broadcast');
   renderVideos();
   $('#homeProjects').innerHTML = PROJECTS.slice(0, 6).map(projectCard).join('');
+  wireProjectImages($('#homeProjects'));
   renderFilters($('#projectFilters'), ['All'].concat(CATEGORIES), renderProjects);
   renderProjects('All');
   renderFilters($('#newsFilters'), ['All', 'Article', 'Event'], renderNews);
@@ -1667,12 +1725,21 @@
     if (p) { openProduct(p.getAttribute('data-product')); return; }
     if (e.target.closest('[data-close-quote]')) { closeLayer($('#quoteDrawer')); return; }
     if (e.target.closest('[data-close-product]')) { closeLayer($('#productModal')); return; }
+    var g = e.target.closest('[data-gallery]');
+    if (g) { openGallery(+g.getAttribute('data-gallery')); return; }
+    if (e.target.closest('[data-close-lightbox]')) { closeLayer($('#lightbox')); return; }
+    if (e.target.closest('#lbPrev')) { stepLb(-1); return; }
+    if (e.target.closest('#lbNext')) { stepLb(1); return; }
     var tab = e.target.closest('[data-tely-tab]');
     if (tab) { renderTelycam(tab.getAttribute('data-tely-tab')); }
   });
 
   // Keyboard inside dialogs only
-  [$('#quoteDrawer'), $('#productModal')].forEach(function (layer) {
+  $('#lightbox').addEventListener('keydown', function (e) {
+    if (e.key === 'ArrowLeft') stepLb(-1);
+    if (e.key === 'ArrowRight') stepLb(1);
+  });
+  [$('#quoteDrawer'), $('#productModal'), $('#lightbox')].forEach(function (layer) {
     layer.addEventListener('keydown', function (e) {
       if (e.key === 'Escape') closeLayer(layer);
       if (e.key === 'Tab') trapFocus(layer, e);
