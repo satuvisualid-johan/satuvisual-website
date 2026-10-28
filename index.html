@@ -1,0 +1,1476 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Satu Visual Indonesia — Broadcast, Live Streaming &amp; Pro AV Solutions</title>
+<meta name="description" content="Satu Visual Indonesia is an NDI®-focused distributor and solutions partner for Telycam, Magewell and CNDLive — helping churches, studios and campuses move from HDMI and SDI to IP video.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Poppins:wght@400;500;600&display=swap">
+<script>
+  // Apply saved theme before paint (dark is the default per brand brief)
+  (function () {
+    var t = 'dark';
+    try { t = localStorage.getItem('sv-theme') || 'dark'; } catch (e) {}
+    document.documentElement.setAttribute('data-theme', t);
+  })();
+</script>
+<script src="https://cdn.tailwindcss.com/3.4.17"></script>
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        colors: {
+          bg: 'rgb(var(--bg) / <alpha-value>)',
+          surface: 'rgb(var(--surface) / <alpha-value>)',
+          surface2: 'rgb(var(--surface2) / <alpha-value>)',
+          line: 'rgb(var(--line) / <alpha-value>)',
+          ink: 'rgb(var(--ink) / <alpha-value>)',
+          muted: 'rgb(var(--muted) / <alpha-value>)',
+          accent: 'rgb(var(--accent) / <alpha-value>)',
+          accentink: 'rgb(var(--accent-ink) / <alpha-value>)',
+          tally: 'rgb(var(--tally) / <alpha-value>)'
+        },
+        fontFamily: {
+          display: ['Montserrat', 'Segoe UI', 'Helvetica Neue', 'Arial', 'sans-serif'],
+          sans: ['Poppins', 'Segoe UI', 'Helvetica Neue', 'Arial', 'sans-serif']
+        }
+      }
+    }
+  };
+</script>
+<script src="https://cdn.jsdelivr.net/npm/lucide@0.460.0/dist/umd/lucide.min.js"></script>
+<style>
+  /* ---------- Theme tokens (RGB channels for Tailwind alpha support) ---------- */
+  :root {
+    --bg: 244 246 249;
+    --surface: 255 255 255;
+    --surface2: 236 240 245;
+    --line: 218 224 233;
+    --ink: 14 21 32;
+    --muted: 79 91 107;
+    --accent: 37 99 235;      /* electric blue — buttons, fills */
+    --accent-ink: 29 78 216;  /* accent used as text */
+    --tally: 238 41 46;       /* Satu Visual logo red — LIVE/tally only */
+    color-scheme: light;
+    box-sizing: border-box;
+    padding-top: env(safe-area-inset-top, 0px);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: 9 13 20; --surface: 16 23 34; --surface2: 22 31 45; --line: 34 46 64;
+      --ink: 232 238 246; --muted: 146 160 180; --accent: 37 99 235; --accent-ink: 110 168 255;
+      color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: 9 13 20; --surface: 16 23 34; --surface2: 22 31 45; --line: 34 46 64;
+    --ink: 232 238 246; --muted: 146 160 180; --accent: 37 99 235; --accent-ink: 110 168 255;
+    color-scheme: dark;
+  }
+  html { scroll-padding-top: calc(env(safe-area-inset-top, 0px) + 84px); }
+  body { background: rgb(var(--bg)); color: rgb(var(--ink)); font-family: 'Poppins', 'Segoe UI', Arial, sans-serif; -webkit-font-smoothing: antialiased; }
+  body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 60; background: rgb(var(--bg) / 0.85); backdrop-filter: blur(14px); }
+  .site-header { top: env(safe-area-inset-top, 0px); }
+  .wa-fab { bottom: calc(20px + env(safe-area-inset-bottom, 0px)); }
+  img, svg { max-width: 100%; }
+
+  :focus-visible { outline: 2px solid rgb(var(--accent-ink)); outline-offset: 3px; border-radius: 6px; }
+
+  .display { font-family: 'Montserrat', 'Segoe UI', Arial, sans-serif; letter-spacing: -0.025em; }
+
+  /* Signal-trace grid behind the hero: a subtle production-monitor raster */
+  .raster {
+    background-image:
+      linear-gradient(rgb(var(--line) / 0.55) 1px, transparent 1px),
+      linear-gradient(90deg, rgb(var(--line) / 0.55) 1px, transparent 1px);
+    background-size: 44px 44px;
+    mask-image: radial-gradient(ellipse at 30% 20%, #000 0%, transparent 70%);
+    -webkit-mask-image: radial-gradient(ellipse at 30% 20%, #000 0%, transparent 70%);
+  }
+
+  /* Bento tiles */
+  .tile { position: relative; overflow: hidden; border: 1px solid rgb(var(--line)); background: rgb(var(--surface)); border-radius: 22px; transition: border-color .25s ease, transform .25s ease; }
+  .tile:hover, .tile:focus-within { border-color: rgb(var(--accent-ink) / 0.7); }
+  .tile .specs { transition: opacity .25s ease, transform .25s ease; }
+  @media (hover: hover) and (min-width: 1024px) {
+    .tile .specs { opacity: 0; transform: translateY(8px); }
+    .tile:hover .specs, .tile:focus-within .specs { opacity: 1; transform: none; }
+  }
+  .tile-art { color: rgb(var(--muted)); transition: color .25s ease, transform .4s ease; }
+  .tile:hover .tile-art, .tile:focus-within .tile-art { color: rgb(var(--ink)); transform: translateY(-4px); }
+
+  /* One orchestrated load sequence: tiles power on like monitors */
+  @keyframes powerOn { from { opacity: 0; transform: translateY(14px) scale(.985); } to { opacity: 1; transform: none; } }
+  .boot > * { animation: powerOn .7s cubic-bezier(.2,.7,.2,1) both; }
+  .boot > *:nth-child(2) { animation-delay: .08s; } .boot > *:nth-child(3) { animation-delay: .16s; }
+  .boot > *:nth-child(4) { animation-delay: .24s; } .boot > *:nth-child(5) { animation-delay: .32s; }
+  .boot > *:nth-child(6) { animation-delay: .40s; }
+
+  @keyframes tally { 0%, 100% { box-shadow: 0 0 0 0 rgb(var(--tally) / .55); } 50% { box-shadow: 0 0 0 6px rgb(var(--tally) / 0); } }
+  .tally-dot { width: 9px; height: 9px; border-radius: 50%; background: rgb(var(--tally)); animation: tally 2s ease-in-out infinite; }
+
+  /* Drawer / modal */
+  .overlay { transition: opacity .25s ease; }
+  .drawer { transition: transform .35s cubic-bezier(.2,.8,.2,1); }
+  [data-open="false"] .overlay { opacity: 0; pointer-events: none; }
+  [data-open="false"] .drawer { transform: translateY(105%); }
+  @media (min-width: 640px) { [data-open="false"] .drawer { transform: translateX(105%); } }
+
+  .page { display: none; }
+  .page.is-active { display: block; }
+
+  .chip-btn[aria-pressed="true"] { background: rgb(var(--ink)); color: rgb(var(--bg)); border-color: rgb(var(--ink)); }
+  .tab-btn[aria-selected="true"] { background: rgb(var(--surface)); color: rgb(var(--ink)); box-shadow: 0 1px 0 rgb(var(--line)); }
+  .nav-link[aria-current="page"] { color: rgb(var(--ink)); }
+  .nav-link[aria-current="page"]::after { content: ""; display: block; height: 2px; margin-top: 4px; background: rgb(var(--accent)); border-radius: 2px; }
+
+  .field { width: 100%; background: rgb(var(--surface2)); border: 1px solid rgb(var(--line)); border-radius: 12px; padding: 12px 14px; color: rgb(var(--ink)); font-size: 15px; }
+  .field::placeholder { color: rgb(var(--muted)); }
+  .field:focus { outline: 2px solid rgb(var(--accent-ink)); outline-offset: 1px; }
+  .field[aria-invalid="true"] { border-color: rgb(var(--tally)); }
+
+  .tab-btn[aria-pressed="true"] { background: rgb(var(--surface)); color: rgb(var(--ink)); box-shadow: 0 1px 0 rgb(var(--line)); }
+
+  /* Signal-flow diagram (HDMI/SDI vs NDI) */
+  .sf-box { fill: rgb(var(--surface)); stroke: rgb(var(--line)); stroke-width: 1.5; }
+  .sf-box.hub { fill: rgb(var(--surface2)); stroke: rgb(var(--ink) / .45); }
+  .sf-box.hub-ndi { fill: rgb(var(--accent)); stroke: rgb(var(--accent)); }
+  .sf-txt { fill: rgb(var(--ink)); font: 500 13px Poppins, 'Segoe UI', Arial, sans-serif; }
+  .sf-txt.on-accent { fill: #ffffff; font-weight: 600; }
+  .sf-lab { fill: rgb(var(--muted)); font: 500 11px Poppins, 'Segoe UI', Arial, sans-serif; }
+  .sf-line { fill: none; stroke: rgb(var(--muted) / .75); stroke-width: 2; }
+  .sf-line.dash { stroke-dasharray: 6 6; }
+  .sf-line.ndi { stroke: rgb(var(--accent-ink)); stroke-width: 2.5; }
+  @keyframes sfFlow { to { stroke-dashoffset: -24; } }
+  .sf-line.flow { stroke-dasharray: 8 4; animation: sfFlow 1.2s linear infinite; }
+
+  .sf-packet { fill: rgb(var(--accent-ink)); stroke: none; }
+
+  /* ---------- Motion ---------- */
+  /* Page change */
+  @keyframes pageIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+  .page.is-active { animation: pageIn .45s cubic-bezier(.2,.7,.2,1) both; }
+
+  /* Scroll reveal: a top-down wipe, like a monitor tuning in */
+  .reveal { opacity: 0; transform: translateY(22px); clip-path: inset(0 0 100% 0); transition: opacity .7s ease, transform .8s cubic-bezier(.2,.7,.2,1), clip-path .9s cubic-bezier(.2,.7,.2,1); }
+  .reveal.in { opacity: 1; transform: none; clip-path: inset(-40px -40px -40px -40px); }
+
+  /* Re-rendered content (tabs, filters) */
+  @keyframes swapIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
+  .swap-in { animation: swapIn .45s cubic-bezier(.2,.7,.2,1) both; }
+
+  /* Cursor-following glow on tiles */
+  .tile::after { content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none; opacity: 0; transition: opacity .3s ease; background: radial-gradient(380px circle at var(--mx, 50%) var(--my, 50%), rgb(var(--accent-ink) / .13), transparent 62%); }
+  @media (hover: hover) { .tile:hover::after { opacity: 1; } }
+
+  /* Signal ticker (lower-third crawl) */
+  @keyframes ticker { to { transform: translateX(-50%); } }
+  .ticker { -webkit-mask-image: linear-gradient(90deg, transparent, #000 5%, #000 95%, transparent); mask-image: linear-gradient(90deg, transparent, #000 5%, #000 95%, transparent); }
+  .ticker-track { animation: ticker 40s linear infinite; }
+  .ticker:hover .ticker-track { animation-play-state: paused; }
+
+  /* Living product illustrations */
+  @keyframes ptzPan { 0%, 100% { transform: translateX(-7px); } 45%, 55% { transform: translateX(7px); } }
+  @keyframes ptzTilt { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-3px); } }
+  .anim-lens { animation: ptzPan 6s ease-in-out infinite; }
+  .anim-ptz { animation: ptzTilt 6s ease-in-out infinite; }
+  @keyframes blink { 0%, 60%, 100% { opacity: 1; } 70%, 90% { opacity: .15; } }
+  .anim-tally { animation: blink 2.4s steps(1) infinite; }
+  @keyframes stick { 0%, 100% { transform: rotate(-14deg); } 30% { transform: rotate(11deg); } 60% { transform: rotate(-3deg); } }
+  .anim-stick { transform-origin: 194px 92px; animation: stick 5s ease-in-out infinite; }
+  @keyframes draw { 0% { stroke-dashoffset: 100; } 50%, 80% { stroke-dashoffset: 0; } 100% { stroke-dashoffset: -100; } }
+  .anim-draw { stroke-dasharray: 100; animation: draw 4.5s ease-in-out infinite; }
+  @keyframes pgm { 0% { transform: translate(0, 0); } 25% { transform: translate(74px, 0); } 50% { transform: translate(74px, 39px); } 75% { transform: translate(0, 39px); } 100% { transform: translate(0, 0); } }
+  .anim-pgm { animation: pgm 8s steps(1) infinite; }
+  @keyframes wave { 0%, 100% { opacity: 0; } 40% { opacity: 1; } }
+  .anim-waves .w1 { animation: wave 2s ease-in-out infinite; }
+  .anim-waves .w2 { animation: wave 2s ease-in-out .35s infinite; }
+
+  .prose-sv h2 { font-family: 'Montserrat', sans-serif; font-weight: 700; font-size: 22px; margin: 36px 0 10px; letter-spacing: -0.01em; }
+  .prose-sv p, .prose-sv li { color: rgb(var(--muted)); line-height: 1.75; font-size: 16px; }
+  .prose-sv ul { list-style: disc; padding-left: 22px; margin: 8px 0; }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+  }
+</style>
+</head>
+<body class="min-h-full">
+
+<a href="#main" class="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[80] focus:rounded-lg focus:bg-surface focus:px-4 focus:py-2">Skip to content</a>
+
+<!-- ================= HEADER ================= -->
+<header class="site-header sticky z-50 border-b border-line bg-bg/85 backdrop-blur-xl">
+  <div id="scrollProgress" class="pointer-events-none absolute inset-x-0 bottom-[-1px] h-0.5 bg-accent" style="transform: scaleX(0); transform-origin: left" aria-hidden="true"></div>
+  <div class="mx-auto flex max-w-7xl items-center justify-between gap-4 px-5 py-3.5 lg:px-8">
+    <a href="#home" class="flex min-h-[44px] items-center gap-3" aria-label="Satu Visual Indonesia — home">
+      <!-- Wordmark (swap for the official logo file when hosting) -->
+      <span class="relative grid h-9 w-9 place-items-center rounded-lg bg-ink text-bg">
+        <span class="display text-[17px] font-extrabold">1</span>
+        <span class="absolute -right-1 -top-1 h-3 w-3 rounded-full border-2 border-bg bg-tally"></span>
+      </span>
+      <span class="leading-tight">
+        <span class="display block text-[17px] font-extrabold">Satu Visual</span>
+        <span class="block text-[11px] text-muted">Indonesia</span>
+      </span>
+    </a>
+
+    <nav aria-label="Main" class="hidden items-center gap-1 lg:flex">
+      <a href="#home" class="nav-link px-3.5 py-3 text-[15px] text-muted hover:text-ink">Home</a>
+      <a href="#ndi" class="nav-link px-3.5 py-3 text-[15px] text-muted hover:text-ink">NDI® Solutions</a>
+      <a href="#about" class="nav-link px-3.5 py-3 text-[15px] text-muted hover:text-ink">About</a>
+      <a href="#projects" class="nav-link px-3.5 py-3 text-[15px] text-muted hover:text-ink">Projects</a>
+      <a href="#news" class="nav-link px-3.5 py-3 text-[15px] text-muted hover:text-ink">News &amp; Events</a>
+      <a href="#contact" class="nav-link px-3.5 py-3 text-[15px] text-muted hover:text-ink">Contact</a>
+    </nav>
+
+    <div class="flex items-center gap-2">
+      <button id="themeToggle" type="button" class="grid h-11 w-11 place-items-center rounded-full border border-line text-muted hover:text-ink" aria-label="Switch to light mode">
+        <i data-lucide="sun" class="h-5 w-5 theme-icon-sun"></i>
+        <i data-lucide="moon" class="hidden h-5 w-5 theme-icon-moon"></i>
+      </button>
+      <button type="button" data-open-quote class="hidden rounded-full bg-accent px-5 py-3 text-[15px] font-semibold text-white hover:bg-accent/90 sm:inline-flex">Request a quote</button>
+      <button id="menuBtn" type="button" class="grid h-11 w-11 place-items-center rounded-full border border-line lg:hidden" aria-expanded="false" aria-controls="mobileNav" aria-label="Open menu">
+        <i data-lucide="menu" class="h-5 w-5"></i>
+      </button>
+    </div>
+  </div>
+  <nav id="mobileNav" aria-label="Mobile" class="hidden border-t border-line px-5 pb-5 lg:hidden">
+    <div class="flex flex-col pt-2">
+      <a href="#home" class="nav-link py-3 text-lg">Home</a>
+      <a href="#ndi" class="nav-link py-3 text-lg">NDI® Solutions</a>
+      <a href="#about" class="nav-link py-3 text-lg">About</a>
+      <a href="#projects" class="nav-link py-3 text-lg">Projects</a>
+      <a href="#news" class="nav-link py-3 text-lg">News &amp; Events</a>
+      <a href="#contact" class="nav-link py-3 text-lg">Contact</a>
+      <button type="button" data-open-quote class="mt-3 rounded-full bg-accent px-5 py-3.5 text-base font-semibold text-white">Request a quote</button>
+    </div>
+  </nav>
+</header>
+
+<main id="main" tabindex="-1" class="outline-none">
+
+<!-- ======================================================
+     PAGE: HOME
+     ====================================================== -->
+<section class="page" data-page="home" aria-labelledby="home-title">
+
+  <!-- HERO: interactive bento showcase -->
+  <div class="relative">
+    <div class="raster pointer-events-none absolute inset-0" aria-hidden="true"></div>
+    <div class="relative mx-auto max-w-7xl px-5 pb-16 pt-10 lg:px-8 lg:pb-24 lg:pt-14">
+      <div class="boot grid grid-cols-1 gap-4 md:grid-cols-6 lg:grid-cols-12 lg:auto-rows-[minmax(250px,auto)]">
+
+        <!-- Intro tile -->
+        <div class="tile flex flex-col justify-between gap-10 p-7 md:col-span-6 lg:col-span-5 lg:row-span-2 lg:p-10">
+          <div class="flex flex-col gap-7">
+            <div class="inline-flex items-center gap-2.5 self-start rounded-full border border-line px-3.5 py-2 text-[13px] text-muted">
+              <span class="tally-dot" aria-hidden="true"></span>
+              <span>NDI® specialists for broadcast, worship and pro AV</span>
+            </div>
+            <h1 id="home-title" class="display text-[44px] font-extrabold leading-[1.02] sm:text-[58px] lg:text-[64px]">Every camera, one network.</h1>
+            <p class="max-w-[42ch] text-[17px] leading-relaxed text-muted lg:text-lg">We’ve built our business around NDI® — live video over a standard IP network. We help churches, studios and campuses replace HDMI and SDI cable runs with a system that’s simpler to wire and easier to grow.</p>
+          </div>
+          <div class="flex flex-col gap-6">
+            <div class="flex flex-wrap gap-3">
+              <button type="button" data-open-quote class="rounded-full bg-accent px-6 py-3.5 text-[15px] font-semibold text-white hover:bg-accent/90">Plan a project with us</button>
+              <a href="#ndi" class="rounded-full border border-line px-6 py-3.5 text-[15px] font-medium hover:border-ink">Why NDI®</a>
+            </div>
+            <div class="flex flex-wrap items-center gap-x-6 gap-y-2 border-t border-line pt-5 text-[14px] text-muted">
+              <span>Official partner for</span>
+              <span class="display text-[16px] font-bold text-ink">Telycam</span>
+              <span class="display text-[16px] font-bold text-ink">Magewell</span>
+              <span class="display text-[16px] font-bold text-ink">CNDLive</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Product tiles rendered from data (see PRODUCTS in script) -->
+        <article class="tile md:col-span-6 lg:col-span-7" data-hero-product="mixone"></article>
+        <article class="tile md:col-span-3 lg:col-span-4" data-hero-product="explore"></article>
+        <article class="tile md:col-span-3 lg:col-span-3" data-hero-product="directorplus"></article>
+        <article class="tile md:col-span-6 lg:col-span-7" data-hero-product="x1"></article>
+
+        <!-- Partner promise tile -->
+        <div class="tile flex flex-col justify-between gap-6 bg-surface2 p-7 md:col-span-6 lg:col-span-5">
+          <h2 class="display text-[22px] font-bold">Bought here, supported here.</h2>
+          <ul class="grid gap-4 sm:grid-cols-3 lg:grid-cols-1 xl:grid-cols-3">
+            <li class="flex flex-col gap-2"><i data-lucide="truck" class="h-5 w-5 text-accentink"></i><span class="text-[15px] font-semibold">Priority delivery</span><span class="text-[14px] leading-relaxed text-muted">Partner orders usually ship within 24 hours, subject to stock.</span></li>
+            <li class="flex flex-col gap-2"><i data-lucide="shield-check" class="h-5 w-5 text-accentink"></i><span class="text-[15px] font-semibold">Local warranty</span><span class="text-[14px] leading-relaxed text-muted">We handle post-sale support and warranty claims in Jakarta.</span></li>
+            <li class="flex flex-col gap-2"><i data-lucide="drafting-compass" class="h-5 w-5 text-accentink"></i><span class="text-[15px] font-semibold">System design</span><span class="text-[14px] leading-relaxed text-muted">Our team helps partners spec the right setup for each client.</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SIGNAL TICKER -->
+  <div class="flex items-stretch border-y border-line bg-surface">
+    <div class="z-10 flex flex-none items-center gap-2.5 border-r border-line bg-surface px-5 py-4 text-[14px] font-semibold"><span class="tally-dot" aria-hidden="true"></span><span class="hidden sm:inline">Signals we work with</span></div>
+    <div class="ticker relative min-w-0 flex-1 overflow-hidden">
+      <div class="ticker-track flex w-max items-center py-4">
+        <div class="flex items-center" aria-label="Formats and protocols we work with">
+          <span class="display px-6 text-[17px] font-bold">NDI® High Bandwidth</span><span class="h-1.5 w-1.5 rounded-full bg-accent" aria-hidden="true"></span>
+          <span class="display px-6 text-[17px] font-bold">NDI|HX3</span><span class="h-1.5 w-1.5 rounded-full bg-accent" aria-hidden="true"></span>
+          <span class="display px-6 text-[17px] font-bold">SRT</span><span class="h-1.5 w-1.5 rounded-full bg-accent" aria-hidden="true"></span>
+          <span class="display px-6 text-[17px] font-bold">RTMP</span><span class="h-1.5 w-1.5 rounded-full bg-accent" aria-hidden="true"></span>
+          <span class="display px-6 text-[17px] font-bold">RTSP</span><span class="h-1.5 w-1.5 rounded-full bg-accent" aria-hidden="true"></span>
+          <span class="display px-6 text-[17px] font-bold">12G-SDI</span><span class="h-1.5 w-1.5 rounded-full bg-accent" aria-hidden="true"></span>
+          <span class="display px-6 text-[17px] font-bold">HDMI</span><span class="h-1.5 w-1.5 rounded-full bg-accent" aria-hidden="true"></span>
+          <span class="display px-6 text-[17px] font-bold">USB-C</span><span class="h-1.5 w-1.5 rounded-full bg-accent" aria-hidden="true"></span>
+          <span class="display px-6 text-[17px] font-bold">PoE++</span><span class="h-1.5 w-1.5 rounded-full bg-accent" aria-hidden="true"></span>
+          <span class="display px-6 text-[17px] font-bold">4K60</span><span class="h-1.5 w-1.5 rounded-full bg-accent" aria-hidden="true"></span>
+          <span class="display px-6 text-[17px] font-bold">Genlock</span><span class="h-1.5 w-1.5 rounded-full bg-accent" aria-hidden="true"></span>
+          <span class="display px-6 text-[17px] font-bold">H.265</span><span class="h-1.5 w-1.5 rounded-full bg-accent" aria-hidden="true"></span>
+          <span class="display px-6 text-[17px] font-bold">Cellular bonding</span><span class="h-1.5 w-1.5 rounded-full bg-accent" aria-hidden="true"></span>
+        </div>
+        <div class="flex items-center" aria-hidden="true">
+          <span class="display px-6 text-[17px] font-bold">NDI® High Bandwidth</span><span class="h-1.5 w-1.5 rounded-full bg-accent"></span>
+          <span class="display px-6 text-[17px] font-bold">NDI|HX3</span><span class="h-1.5 w-1.5 rounded-full bg-accent"></span>
+          <span class="display px-6 text-[17px] font-bold">SRT</span><span class="h-1.5 w-1.5 rounded-full bg-accent"></span>
+          <span class="display px-6 text-[17px] font-bold">RTMP</span><span class="h-1.5 w-1.5 rounded-full bg-accent"></span>
+          <span class="display px-6 text-[17px] font-bold">RTSP</span><span class="h-1.5 w-1.5 rounded-full bg-accent"></span>
+          <span class="display px-6 text-[17px] font-bold">12G-SDI</span><span class="h-1.5 w-1.5 rounded-full bg-accent"></span>
+          <span class="display px-6 text-[17px] font-bold">HDMI</span><span class="h-1.5 w-1.5 rounded-full bg-accent"></span>
+          <span class="display px-6 text-[17px] font-bold">USB-C</span><span class="h-1.5 w-1.5 rounded-full bg-accent"></span>
+          <span class="display px-6 text-[17px] font-bold">PoE++</span><span class="h-1.5 w-1.5 rounded-full bg-accent"></span>
+          <span class="display px-6 text-[17px] font-bold">4K60</span><span class="h-1.5 w-1.5 rounded-full bg-accent"></span>
+          <span class="display px-6 text-[17px] font-bold">Genlock</span><span class="h-1.5 w-1.5 rounded-full bg-accent"></span>
+          <span class="display px-6 text-[17px] font-bold">H.265</span><span class="h-1.5 w-1.5 rounded-full bg-accent"></span>
+          <span class="display px-6 text-[17px] font-bold">Cellular bonding</span><span class="h-1.5 w-1.5 rounded-full bg-accent"></span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- NDI: BEFORE / AFTER -->
+  <section class="border-t border-line" aria-labelledby="ndi-home-title">
+    <div class="mx-auto max-w-7xl px-5 py-20 lg:px-8 lg:py-28">
+      <div class="grid gap-8 lg:grid-cols-12 lg:items-end">
+        <div class="lg:col-span-7">
+          <p class="text-[15px] font-semibold text-accentink">Our focus: NDI®</p>
+          <h2 id="ndi-home-title" class="display mt-3 text-[36px] font-extrabold leading-[1.06] sm:text-[50px]">From a cable for every signal to one network for all of them.</h2>
+        </div>
+        <p class="text-[17px] leading-relaxed text-muted lg:col-span-5">With HDMI and SDI, every camera needs its own cable to the switcher, and every extra screen needs another run. With NDI®, sources and displays join one Ethernet network, so any feed can reach any room.</p>
+      </div>
+      <div class="mt-12" data-signal-flow></div>
+    </div>
+  </section>
+
+  <!-- HOUSES OF WORSHIP -->
+  <section class="border-t border-line bg-surface2" aria-labelledby="church-title">
+    <div class="mx-auto grid max-w-7xl gap-12 px-5 py-20 lg:grid-cols-12 lg:px-8 lg:py-28">
+      <div class="flex flex-col gap-6 lg:col-span-6">
+        <p class="text-[15px] font-semibold text-accentink">Houses of worship</p>
+        <h2 id="church-title" class="display text-[36px] font-extrabold leading-[1.06] sm:text-[48px]">Churches are leaving the cable runs behind.</h2>
+        <p class="max-w-[58ch] text-[17px] leading-relaxed text-muted">Many of our projects are churches that used to run HDMI and SDI and have moved to NDI®. Services stream with fewer cables, PTZ cameras run on a single Ethernet line, and the same feeds reach the main hall, overflow rooms and lobby screens.</p>
+        <ul class="flex flex-col gap-5 pt-2">
+          <li class="flex gap-4"><i data-lucide="cable" class="mt-0.5 h-5 w-5 flex-none text-accentink"></i><div><h3 class="text-[16px] font-semibold">One cable per camera</h3><p class="mt-1 text-[15px] leading-relaxed text-muted">With PoE, a single Ethernet run carries video, PTZ control, tally and power.</p></div></li>
+          <li class="flex gap-4"><i data-lucide="layout-grid" class="mt-0.5 h-5 w-5 flex-none text-accentink"></i><div><h3 class="text-[16px] font-semibold">Every room gets the service</h3><p class="mt-1 text-[15px] leading-relaxed text-muted">Overflow halls, children’s rooms and lobby screens pick up any feed from the network.</p></div></li>
+          <li class="flex gap-4"><i data-lucide="hand-heart" class="mt-0.5 h-5 w-5 flex-none text-accentink"></i><div><h3 class="text-[16px] font-semibold">Simple for volunteers</h3><p class="mt-1 text-[15px] leading-relaxed text-muted">One switcher, saved camera presets and a setup that works the same way every week.</p></div></li>
+        </ul>
+        <div class="flex flex-wrap gap-3 pt-2">
+          <button type="button" data-open-quote data-quote-product="Church NDI® upgrade" class="rounded-full bg-accent px-6 py-3.5 text-[15px] font-semibold text-white hover:bg-accent/90">Plan your church’s upgrade</button>
+          <a href="#ndi" class="rounded-full border border-line px-6 py-3.5 text-[15px] font-medium hover:border-ink">How NDI® works</a>
+        </div>
+      </div>
+      <div class="lg:col-span-6">
+        <div class="tile p-7 lg:p-9">
+          <h3 class="display text-[20px] font-bold">A typical church NDI® system</h3>
+          <ol class="mt-7 flex flex-col">
+            <li class="flex gap-4"><span class="flex flex-col items-center"><span class="grid h-9 w-9 flex-none place-items-center rounded-full border border-line bg-surface2 text-[14px] font-semibold">1</span><span class="my-1 w-px flex-1 bg-line"></span></span><div class="pb-7 pt-1.5"><h4 class="text-[16px] font-semibold">Capture</h4><p class="mt-1 text-[15px] leading-relaxed text-muted">Telycam Explore NDI® PTZ cameras on PoE, plus the lyrics and slides PC sending NDI® from software.</p></div></li>
+            <li class="flex gap-4"><span class="flex flex-col items-center"><span class="grid h-9 w-9 flex-none place-items-center rounded-full border border-line bg-surface2 text-[14px] font-semibold">2</span><span class="my-1 w-px flex-1 bg-line"></span></span><div class="pb-7 pt-1.5"><h4 class="text-[16px] font-semibold">Produce</h4><p class="mt-1 text-[15px] leading-relaxed text-muted">Telycam Mix One or Magewell Director Plus switches the service, adds graphics and records.</p></div></li>
+            <li class="flex gap-4"><span class="flex flex-col items-center"><span class="grid h-9 w-9 flex-none place-items-center rounded-full border border-line bg-surface2 text-[14px] font-semibold">3</span><span class="my-1 w-px flex-1 bg-line"></span></span><div class="pb-7 pt-1.5"><h4 class="text-[16px] font-semibold">Distribute</h4><p class="mt-1 text-[15px] leading-relaxed text-muted">Magewell Pro Convert or CNDLive NDI Go decoders feed screens in every room.</p></div></li>
+            <li class="flex gap-4"><span class="flex flex-col items-center"><span class="grid h-9 w-9 flex-none place-items-center rounded-full bg-accent text-[14px] font-semibold text-white">4</span></span><div class="pt-1.5"><h4 class="text-[16px] font-semibold">Stream</h4><p class="mt-1 text-[15px] leading-relaxed text-muted">The program goes live to YouTube or Facebook straight from the switcher.</p></div></li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TELYCAM SPOTLIGHT -->
+  <section class="border-t border-line bg-surface" aria-labelledby="telycam-title">
+    <div class="mx-auto max-w-7xl px-5 py-20 lg:px-8 lg:py-28">
+      <div class="flex flex-col justify-between gap-8 lg:flex-row lg:items-end">
+        <div class="max-w-2xl">
+          <p class="text-[15px] font-semibold text-accentink">Our lead brand</p>
+          <h2 id="telycam-title" class="display mt-3 text-[38px] font-extrabold leading-[1.05] sm:text-[52px]">Telycam, end to end.</h2>
+          <p class="mt-5 max-w-[60ch] text-[17px] leading-relaxed text-muted">Telycam builds NDI® PTZ cameras and production tools for broadcast, worship and ProAV. We stock the range and help you combine it into one network-based system.</p>
+        </div>
+        <div role="tablist" aria-label="Telycam product lines" class="flex flex-wrap gap-1 self-start rounded-full border border-line bg-surface2 p-1.5 lg:self-auto">
+          <button role="tab" class="tab-btn rounded-full px-5 py-2.5 text-[15px] font-medium text-muted" aria-selected="true" aria-controls="tely-panel" data-tely-tab="broadcast">Broadcast PTZ</button>
+          <button role="tab" class="tab-btn rounded-full px-5 py-2.5 text-[15px] font-medium text-muted" aria-selected="false" aria-controls="tely-panel" data-tely-tab="production">Production</button>
+          <button role="tab" class="tab-btn rounded-full px-5 py-2.5 text-[15px] font-medium text-muted" aria-selected="false" aria-controls="tely-panel" data-tely-tab="conferencing">Conferencing</button>
+        </div>
+      </div>
+      <div id="tely-panel" role="tabpanel" class="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3" aria-live="polite"></div>
+    </div>
+  </section>
+
+  <!-- SUPPORTING BRANDS -->
+  <section class="mx-auto max-w-7xl px-5 py-20 lg:px-8 lg:py-28" aria-labelledby="brands-title">
+    <h2 id="brands-title" class="display text-[34px] font-extrabold leading-[1.08] sm:text-[44px]">Completing the NDI® workflow.</h2>
+    <div class="mt-10 grid gap-4 lg:grid-cols-2">
+      <div class="tile flex flex-col gap-6 p-8 lg:p-10">
+        <div class="flex items-start justify-between gap-4">
+          <div>
+            <span class="display text-[28px] font-extrabold">Magewell</span>
+            <p class="mt-2 text-[15px] text-muted">Production, capture and IP conversion</p>
+          </div>
+          <i data-lucide="monitor-play" class="h-7 w-7 text-accentink"></i>
+        </div>
+        <p class="max-w-[52ch] text-[16px] leading-relaxed text-muted">Pro Convert NDI® encoders and decoders that bring existing HDMI and SDI gear onto the network, plus all-in-one Director production systems with NDI® and SRT.</p>
+        <div class="mt-auto flex flex-wrap gap-3">
+          <button type="button" class="rounded-full border border-line px-5 py-3 text-[15px] font-medium hover:border-ink" data-product="directorplus">Director Plus specs</button>
+          <button type="button" class="rounded-full px-5 py-3 text-[15px] font-medium text-accentink" data-open-quote data-quote-product="Magewell (general)">Ask about Magewell</button>
+        </div>
+      </div>
+      <div class="tile flex flex-col gap-6 p-8 lg:p-10">
+        <div class="flex items-start justify-between gap-4">
+          <div>
+            <span class="display text-[28px] font-extrabold">CNDLive</span>
+            <p class="mt-2 text-[15px] text-muted">NDI® conversion and bonded transmission</p>
+          </div>
+          <i data-lucide="radio-tower" class="h-7 w-7 text-accentink"></i>
+        </div>
+        <p class="max-w-[52ch] text-[16px] leading-relaxed text-muted">NDI|HX encoders, NDI® decoders such as NDI Go, and cellular bonding encoders for reliable remote live streams.</p>
+        <div class="mt-auto flex flex-wrap gap-3">
+          <button type="button" class="rounded-full border border-line px-5 py-3 text-[15px] font-medium hover:border-ink" data-product="x1">X1 specs</button>
+          <button type="button" class="rounded-full px-5 py-3 text-[15px] font-medium text-accentink" data-open-quote data-quote-product="CNDLive (general)">Ask about CNDLive</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- VIDEO SHOWCASE -->
+  <section class="border-y border-line bg-surface" aria-labelledby="video-title">
+    <div class="mx-auto max-w-7xl px-5 py-20 lg:px-8 lg:py-28">
+      <div class="flex flex-col justify-between gap-6 sm:flex-row sm:items-end">
+        <div>
+          <h2 id="video-title" class="display text-[34px] font-extrabold leading-[1.08] sm:text-[44px]">Watch the gear at work.</h2>
+          <p class="mt-4 max-w-[56ch] text-[17px] text-muted">NDI® explainers, setup guides and product reviews from the Satu Visual Indonesia YouTube channel, hosted by our CEO, Johan Zhang.</p>
+        </div>
+        <a href="https://www.youtube.com/channel/UCHQgXBd3UPEv_3BppQFxrHw" target="_blank" rel="noopener" class="inline-flex items-center gap-2 self-start rounded-full border border-line px-5 py-3 text-[15px] font-medium hover:border-ink sm:self-auto"><i data-lucide="youtube" class="h-5 w-5"></i>Visit our channel</a>
+      </div>
+      <div id="videoGrid" class="mt-12 grid gap-5 md:grid-cols-2 lg:grid-cols-12"></div>
+    </div>
+  </section>
+
+  <!-- PROJECT REFERENCES -->
+  <section class="mx-auto max-w-7xl px-5 py-20 lg:px-8 lg:py-28" aria-labelledby="ref-title">
+    <div class="flex flex-col justify-between gap-6 sm:flex-row sm:items-end">
+      <h2 id="ref-title" class="display text-[34px] font-extrabold leading-[1.08] sm:text-[44px]">Projects we’ve powered.</h2>
+      <a href="#projects" class="inline-flex items-center gap-2 self-start rounded-full border border-line px-5 py-3 text-[15px] font-medium hover:border-ink sm:self-auto">All projects</a>
+    </div>
+    <div id="homeProjects" class="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-3"></div>
+  </section>
+
+  <!-- CTA -->
+  <section class="px-5 pb-24 lg:px-8">
+    <div class="mx-auto flex max-w-7xl flex-col gap-8 rounded-[28px] bg-accent p-8 text-white sm:p-12 lg:flex-row lg:items-center lg:justify-between lg:p-16">
+      <div class="max-w-2xl">
+        <h2 class="display text-[34px] font-extrabold leading-[1.08] sm:text-[46px]">Moving your church or studio to NDI®?</h2>
+        <p class="mt-4 text-[17px] leading-relaxed text-white/90">Tell us what you run today. Our team replies on WhatsApp with an NDI® migration plan and a quote.</p>
+      </div>
+      <button type="button" data-open-quote class="inline-flex items-center gap-2.5 self-start rounded-full bg-white px-7 py-4 text-[16px] font-semibold text-[#1d4ed8] hover:bg-white/90 lg:self-auto"><i data-lucide="message-circle" class="h-5 w-5"></i>Start on WhatsApp</button>
+    </div>
+  </section>
+</section>
+
+<!-- ======================================================
+     PAGE: NDI SOLUTIONS
+     ====================================================== -->
+<section class="page" data-page="ndi" aria-labelledby="ndi-title">
+  <div class="mx-auto max-w-7xl px-5 pb-12 pt-14 lg:px-8 lg:pt-20">
+    <p class="text-[15px] font-semibold text-accentink">NDI® solutions</p>
+    <h1 id="ndi-title" class="display mt-3 max-w-4xl text-[42px] font-extrabold leading-[1.04] sm:text-[60px]">Live video over a network, not a tangle of cables.</h1>
+    <p class="mt-6 max-w-[64ch] text-lg leading-relaxed text-muted">NDI® (Network Device Interface) sends video, audio and control over standard Ethernet. It has been Satu Visual’s focus for years: in the products we carry, the systems we design and the talks we give.</p>
+  </div>
+  <div class="mx-auto max-w-7xl px-5 pb-20 lg:px-8"><div data-signal-flow></div></div>
+
+  <section class="border-y border-line bg-surface" aria-labelledby="ndi-benefits-title">
+    <div class="mx-auto max-w-7xl px-5 py-20 lg:px-8">
+      <h2 id="ndi-benefits-title" class="display text-[34px] font-extrabold sm:text-[44px]">What changes when you switch</h2>
+      <div class="mt-10 grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+        <div class="tile bg-bg p-7"><i data-lucide="cable" class="h-6 w-6 text-accentink"></i><h3 class="mt-4 text-[17px] font-semibold">Fewer, simpler cables</h3><p class="mt-2 text-[15px] leading-relaxed text-muted">One Ethernet cable can carry video, audio, PTZ control and tally, and power the camera with PoE.</p></div>
+        <div class="tile bg-bg p-7"><i data-lucide="share-2" class="h-6 w-6 text-accentink"></i><h3 class="mt-4 text-[17px] font-semibold">Any source, anywhere</h3><p class="mt-2 text-[15px] leading-relaxed text-muted">Every NDI® source on the network can be picked up in any room, switcher or software.</p></div>
+        <div class="tile bg-bg p-7"><i data-lucide="plus-circle" class="h-6 w-6 text-accentink"></i><h3 class="mt-4 text-[17px] font-semibold">Grows with you</h3><p class="mt-2 text-[15px] leading-relaxed text-muted">Add a camera or a screen by plugging it into the network instead of pulling new cable.</p></div>
+        <div class="tile bg-bg p-7"><i data-lucide="repeat" class="h-6 w-6 text-accentink"></i><h3 class="mt-4 text-[17px] font-semibold">Keeps your current gear</h3><p class="mt-2 text-[15px] leading-relaxed text-muted">Encoders bring existing HDMI and SDI cameras onto NDI®; decoders feed any display.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="mx-auto max-w-7xl px-5 py-20 lg:px-8" aria-labelledby="ndi-steps-title">
+    <h2 id="ndi-steps-title" class="display text-[34px] font-extrabold sm:text-[44px]">How we move you to NDI®</h2>
+    <ol class="mt-10 grid gap-px overflow-hidden rounded-[22px] border border-line bg-line md:grid-cols-2 lg:grid-cols-4">
+      <li class="flex flex-col gap-3 bg-surface p-7"><span class="display text-[30px] font-extrabold text-accentink">1</span><h3 class="text-[17px] font-semibold">Audit</h3><p class="text-[15px] leading-relaxed text-muted">We map your cameras, cable runs, screens and stream as they are today.</p></li>
+      <li class="flex flex-col gap-3 bg-surface p-7"><span class="display text-[30px] font-extrabold text-accentink">2</span><h3 class="text-[17px] font-semibold">Network design</h3><p class="text-[15px] leading-relaxed text-muted">We size the switch, bandwidth and PoE budget for your sources and rooms.</p></li>
+      <li class="flex flex-col gap-3 bg-surface p-7"><span class="display text-[30px] font-extrabold text-accentink">3</span><h3 class="text-[17px] font-semibold">Phased switch-over</h3><p class="text-[15px] leading-relaxed text-muted">Existing gear keeps working through NDI® encoders while you replace in stages.</p></li>
+      <li class="flex flex-col gap-3 bg-surface p-7"><span class="display text-[30px] font-extrabold text-accentink">4</span><h3 class="text-[17px] font-semibold">Training and support</h3><p class="text-[15px] leading-relaxed text-muted">We train your operators and volunteers, then support the system locally.</p></li>
+    </ol>
+  </section>
+
+  <section class="border-t border-line" aria-labelledby="ndi-range-title">
+    <div class="mx-auto max-w-7xl px-5 py-20 lg:px-8">
+      <h2 id="ndi-range-title" class="display text-[34px] font-extrabold sm:text-[44px]">The NDI® range we carry</h2>
+      <div class="mt-10 grid gap-4 lg:grid-cols-3">
+        <div class="tile flex flex-col gap-5 p-7">
+          <span class="display text-[24px] font-extrabold">Telycam</span>
+          <ul class="flex flex-col gap-4 text-[15px]">
+            <li><span class="font-semibold">Explore 500</span><span class="block text-muted">NDI® High Bandwidth and NDI|HX, 12G-SDI, SFP+</span></li>
+            <li><span class="font-semibold">Explore 300</span><span class="block text-muted">4K60 over NDI|HX3 and HDMI</span></li>
+            <li><span class="font-semibold">Mix One</span><span class="block text-muted">Switcher with NDI® among its six inputs</span></li>
+            <li><span class="font-semibold">V-JOY+ controllers</span><span class="block text-muted">PTZ joysticks with control over NDI®</span></li>
+          </ul>
+          <button type="button" class="mt-auto self-start text-[15px] font-semibold text-accentink" data-product="explore">Explore Gen 2 specs</button>
+        </div>
+        <div class="tile flex flex-col gap-5 p-7">
+          <span class="display text-[24px] font-extrabold">Magewell</span>
+          <ul class="flex flex-col gap-4 text-[15px]">
+            <li><span class="font-semibold">Pro Convert NDI® encoders</span><span class="block text-muted">Turn HDMI or SDI sources into NDI®</span></li>
+            <li><span class="font-semibold">Pro Convert decoders</span><span class="block text-muted">NDI® and SRT out to any display</span></li>
+            <li><span class="font-semibold">Director Plus</span><span class="block text-muted">All-in-one 4K production with NDI® and SRT</span></li>
+          </ul>
+          <button type="button" class="mt-auto self-start text-[15px] font-semibold text-accentink" data-product="directorplus">Director Plus specs</button>
+        </div>
+        <div class="tile flex flex-col gap-5 p-7">
+          <span class="display text-[24px] font-extrabold">CNDLive</span>
+          <ul class="flex flex-col gap-4 text-[15px]">
+            <li><span class="font-semibold">C6 encoder</span><span class="block text-muted">HDMI and SDI to NDI|HX, SRT and RTMP</span></li>
+            <li><span class="font-semibold">NDI Go</span><span class="block text-muted">Compact NDI® to 4K HDMI decoder</span></li>
+            <li><span class="font-semibold">X1</span><span class="block text-muted">Bonding encoder for streams from outside the venue</span></li>
+          </ul>
+          <button type="button" class="mt-auto self-start text-[15px] font-semibold text-accentink" data-open-quote data-quote-product="CNDLive NDI® products">Ask about CNDLive</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="border-t border-line bg-surface2" aria-labelledby="johan-title">
+    <div class="mx-auto grid max-w-7xl gap-10 px-5 py-20 lg:grid-cols-12 lg:items-center lg:px-8">
+      <div class="lg:col-span-5" data-video-card="0"></div>
+      <div class="flex flex-col gap-6 lg:col-span-7">
+        <p class="text-[15px] font-semibold text-accentink">Meet our CEO</p>
+        <h2 id="johan-title" class="display text-[36px] font-extrabold leading-[1.06] sm:text-[48px]">Learn NDI® with Johan Zhang.</h2>
+        <p class="max-w-[60ch] text-[17px] leading-relaxed text-muted">Johan leads Satu Visual Indonesia and brings years of experience across pro AV, IT and networking. He presents on NDI® at industry and church technology events, and hosts the Satu Visual Indonesia YouTube channel, sharing practical AV knowledge for churches, event organizers and AV teams.</p>
+        <div>
+          <h3 class="text-[16px] font-semibold">Recent talks</h3>
+          <ul class="mt-3 flex flex-col divide-y divide-line border-y border-line text-[15px]">
+            <li class="flex flex-wrap justify-between gap-2 py-3.5"><a href="https://www.youtube.com/watch?v=OvhgEG4T3oo&amp;t=24s" target="_blank" rel="noopener" class="font-medium text-accentink hover:underline">NDI® presentation</a><span class="text-muted">ProAVL 2025</span></li>
+            <li class="flex flex-wrap justify-between gap-2 py-3.5"><span>[Talk title]</span><span class="text-muted">[Event name, city, year]</span></li>
+            <li class="flex flex-wrap justify-between gap-2 py-3.5"><span>[Talk title]</span><span class="text-muted">[Event name, city, year]</span></li>
+          </ul>
+        </div>
+        <div class="flex flex-wrap gap-3">
+          <button type="button" data-open-quote data-quote-product="NDI® talk or workshop request" class="rounded-full bg-accent px-6 py-3.5 text-[15px] font-semibold text-white hover:bg-accent/90">Invite Johan to speak</button>
+          <a href="https://www.youtube.com/channel/UCHQgXBd3UPEv_3BppQFxrHw" target="_blank" rel="noopener" class="inline-flex items-center gap-2 rounded-full border border-line px-6 py-3.5 text-[15px] font-medium hover:border-ink"><i data-lucide="youtube" class="h-5 w-5"></i>Watch on YouTube</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</section>
+
+<!-- ======================================================
+     PAGE: ABOUT
+     ====================================================== -->
+<section class="page" data-page="about" aria-labelledby="about-title">
+  <div class="mx-auto max-w-7xl px-5 pb-16 pt-14 lg:px-8 lg:pt-20">
+    <p class="text-[15px] font-semibold text-accentink">About us</p>
+    <h1 id="about-title" class="display mt-3 max-w-4xl text-[42px] font-extrabold leading-[1.04] sm:text-[60px]">The team behind Indonesia’s live productions.</h1>
+    <p class="mt-6 max-w-[62ch] text-lg leading-relaxed text-muted">Founded in 2019, PT Satu Visual Indonesia brings IP-based audiovisual technology, with NDI® at its core, to churches, broadcasters, system integrators, schools, companies and content creators — and stays with them long after the sale.</p>
+  </div>
+
+  <div class="mx-auto grid max-w-7xl gap-4 px-5 pb-20 lg:grid-cols-2 lg:px-8">
+    <div class="tile p-8 lg:p-10">
+      <i data-lucide="eye" class="h-6 w-6 text-accentink"></i>
+      <h2 class="display mt-5 text-[26px] font-bold">Vision</h2>
+      <p class="mt-3 text-[16px] leading-relaxed text-muted">To be Indonesia’s most trusted partner for NDI® and live production technology. <span class="text-ink/60">[Draft — confirm wording]</span></p>
+    </div>
+    <div class="tile p-8 lg:p-10">
+      <i data-lucide="target" class="h-6 w-6 text-accentink"></i>
+      <h2 class="display mt-5 text-[26px] font-bold">Mission</h2>
+      <ul class="mt-3 flex flex-col gap-2 text-[16px] leading-relaxed text-muted">
+        <li>Bring proven global video brands to Indonesia with local stock.</li>
+        <li>Give every customer real after-sales and warranty support.</li>
+        <li>Make NDI® approachable through training, talks and our YouTube channel.</li>
+        <li>Help partners design complete, reliable systems. <span class="text-ink/60">[Draft — confirm wording]</span></li>
+      </ul>
+    </div>
+  </div>
+
+  <section class="border-y border-line bg-surface" aria-labelledby="history-title">
+    <div class="mx-auto max-w-7xl px-5 py-20 lg:px-8">
+      <h2 id="history-title" class="display text-[34px] font-extrabold sm:text-[44px]">Our story</h2>
+      <ol class="mt-10 grid gap-px overflow-hidden rounded-[22px] border border-line bg-line md:grid-cols-4">
+        <li class="flex flex-col gap-3 bg-surface p-7"><span class="display text-[30px] font-extrabold text-accentink">2019</span><span class="text-[15px] leading-relaxed text-muted">Satu Visual Indonesia is founded in Jakarta to supply IP-based AV solutions.</span></li>
+        <li class="flex flex-col gap-3 bg-surface p-7"><span class="display text-[30px] font-extrabold text-accentink">[Year]</span><span class="text-[15px] leading-relaxed text-muted">[Milestone — e.g. first official brand partnership]</span></li>
+        <li class="flex flex-col gap-3 bg-surface p-7"><span class="display text-[30px] font-extrabold text-accentink">[Year]</span><span class="text-[15px] leading-relaxed text-muted">[Milestone — e.g. partner network or showroom]</span></li>
+        <li class="flex flex-col gap-3 bg-surface p-7"><span class="display text-[30px] font-extrabold text-accentink">Today</span><span class="text-[15px] leading-relaxed text-muted">Focused on NDI® workflows with Telycam, Magewell and CNDLive.</span></li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="mx-auto max-w-7xl px-5 py-20 lg:px-8" aria-labelledby="why-title">
+    <h2 id="why-title" class="display text-[34px] font-extrabold sm:text-[44px]">Why work with Satu Visual</h2>
+    <div class="mt-10 grid gap-4 md:grid-cols-2 lg:grid-cols-5">
+      <div class="tile p-7"><i data-lucide="network" class="h-6 w-6 text-accentink"></i><h3 class="mt-4 text-[17px] font-semibold">NDI® expertise</h3><p class="mt-2 text-[15px] leading-relaxed text-muted">Years of designing and supporting NDI® systems.</p></div>
+      <div class="tile p-7"><i data-lucide="badge-check" class="h-6 w-6 text-accentink"></i><h3 class="mt-4 text-[17px] font-semibold">Official distribution</h3><p class="mt-2 text-[15px] leading-relaxed text-muted">Genuine units with valid manufacturer warranty.</p></div>
+      <div class="tile p-7"><i data-lucide="package-check" class="h-6 w-6 text-accentink"></i><h3 class="mt-4 text-[17px] font-semibold">Stock in Jakarta</h3><p class="mt-2 text-[15px] leading-relaxed text-muted">Partner orders usually ship within 24 hours.</p></div>
+      <div class="tile p-7"><i data-lucide="wrench" class="h-6 w-6 text-accentink"></i><h3 class="mt-4 text-[17px] font-semibold">Local support</h3><p class="mt-2 text-[15px] leading-relaxed text-muted">Setup help, troubleshooting and warranty handling.</p></div>
+      <div class="tile p-7"><i data-lucide="users" class="h-6 w-6 text-accentink"></i><h3 class="mt-4 text-[17px] font-semibold">Channel partnership</h3><p class="mt-2 text-[15px] leading-relaxed text-muted">Dealers and integrators get pricing and solution support.</p></div>
+    </div>
+  </section>
+</section>
+
+<!-- ======================================================
+     PAGE: PROJECTS
+     ====================================================== -->
+<section class="page" data-page="projects" aria-labelledby="projects-title">
+  <div class="mx-auto max-w-7xl px-5 pb-10 pt-14 lg:px-8 lg:pt-20">
+    <p class="text-[15px] font-semibold text-accentink">Portfolio</p>
+    <h1 id="projects-title" class="display mt-3 max-w-4xl text-[42px] font-extrabold leading-[1.04] sm:text-[60px]">Systems running in studios, campuses and stages.</h1>
+    <div class="mt-10 flex flex-wrap gap-2" role="group" aria-label="Filter projects by category" id="projectFilters"></div>
+  </div>
+  <div class="mx-auto max-w-7xl px-5 pb-24 lg:px-8">
+    <div id="projectGrid" class="grid gap-5 sm:grid-cols-2 lg:grid-cols-3" aria-live="polite"></div>
+  </div>
+</section>
+
+<!-- ======================================================
+     PAGE: NEWS & EVENTS
+     ====================================================== -->
+<section class="page" data-page="news" aria-labelledby="news-title">
+  <div class="mx-auto max-w-7xl px-5 pb-10 pt-14 lg:px-8 lg:pt-20">
+    <p class="text-[15px] font-semibold text-accentink">News &amp; events</p>
+    <h1 id="news-title" class="display mt-3 max-w-4xl text-[42px] font-extrabold leading-[1.04] sm:text-[60px]">Guides, launches and where to meet us.</h1>
+    <div class="mt-10 flex flex-wrap gap-2" role="group" aria-label="Filter posts" id="newsFilters"></div>
+  </div>
+  <div class="mx-auto max-w-7xl px-5 pb-24 lg:px-8">
+    <div id="newsGrid" class="grid gap-x-6 gap-y-12 md:grid-cols-2 lg:grid-cols-3" aria-live="polite"></div>
+  </div>
+</section>
+
+<!-- ======================================================
+     PAGE: CONTACT
+     ====================================================== -->
+<section class="page" data-page="contact" aria-labelledby="contact-title">
+  <div class="mx-auto max-w-7xl px-5 pb-10 pt-14 lg:px-8 lg:pt-20">
+    <p class="text-[15px] font-semibold text-accentink">Contact</p>
+    <h1 id="contact-title" class="display mt-3 max-w-4xl text-[42px] font-extrabold leading-[1.04] sm:text-[60px]">Talk to our team.</h1>
+  </div>
+  <div class="mx-auto grid max-w-7xl gap-5 px-5 pb-24 lg:grid-cols-12 lg:px-8">
+    <form id="contactForm" class="tile flex flex-col gap-5 p-7 lg:col-span-7 lg:p-10" novalidate>
+      <h2 class="display text-[24px] font-bold">Send us your enquiry</h2>
+      <p class="-mt-2 text-[15px] text-muted">We’ll continue the conversation on WhatsApp.</p>
+      <div class="grid gap-5 sm:grid-cols-2" data-form-fields></div>
+      <label class="flex flex-col gap-2 text-[14px] font-medium">Message
+        <textarea name="message" rows="4" class="field" placeholder="What are you planning? Venue, number of cameras, timeline…"></textarea>
+      </label>
+      <p class="form-error hidden text-[14px] font-medium text-tally" role="alert"></p>
+      <button type="submit" class="inline-flex items-center justify-center gap-2.5 self-start rounded-full bg-accent px-7 py-3.5 text-[16px] font-semibold text-white hover:bg-accent/90"><i data-lucide="message-circle" class="h-5 w-5"></i>Send via WhatsApp</button>
+    </form>
+
+    <div class="flex flex-col gap-5 lg:col-span-5">
+      <div class="tile flex flex-col gap-6 p-7 lg:p-9">
+        <div class="flex gap-4"><i data-lucide="map-pin" class="mt-1 h-5 w-5 flex-none text-accentink"></i><div><h3 class="text-[15px] font-semibold">Office</h3><p class="mt-1 text-[15px] leading-relaxed text-muted">Jl. Taman Palem Lestari, Ruko Pelangi Blok D No. 20, Cengkareng, Jakarta Barat 11730</p></div></div>
+        <div class="flex gap-4"><i data-lucide="phone" class="mt-1 h-5 w-5 flex-none text-accentink"></i><div><h3 class="text-[15px] font-semibold">WhatsApp</h3><a href="https://wa.me/628118047717" target="_blank" rel="noopener" class="mt-1 block text-[15px] text-muted hover:text-ink">+62 811 804 7717</a></div></div>
+        <div class="flex gap-4"><i data-lucide="mail" class="mt-1 h-5 w-5 flex-none text-accentink"></i><div><h3 class="text-[15px] font-semibold">Email</h3><a href="mailto:info@satuvisual.co.id" class="mt-1 block text-[15px] text-muted hover:text-ink">info@satuvisual.co.id</a></div></div>
+      </div>
+      <!-- Map card. On your own hosting you can replace this block with a Google Maps <iframe> embed. -->
+      <a href="https://www.google.com/maps/search/?api=1&amp;query=Ruko+Pelangi+Blok+D+No+20+Taman+Palem+Lestari+Cengkareng+Jakarta+Barat" target="_blank" rel="noopener" class="tile group relative block min-h-[260px] overflow-hidden p-7" aria-label="Open our office location in Google Maps">
+        <svg class="absolute inset-0 h-full w-full text-line" viewBox="0 0 400 260" preserveAspectRatio="xMidYMid slice" aria-hidden="true" fill="none" stroke="currentColor">
+          <path d="M-10 70 C 80 60, 140 110, 230 90 S 360 40, 420 60" stroke-width="10"/>
+          <path d="M60 -10 L 110 280" stroke-width="6"/>
+          <path d="M260 -10 C 250 80, 300 150, 280 280" stroke-width="6"/>
+          <path d="M-10 190 L 420 170" stroke-width="4"/>
+          <path d="M150 -10 L 170 280 M 340 -10 L 360 280 M -10 130 L 420 140" stroke-width="2"/>
+        </svg>
+        <span class="absolute left-[46%] top-[42%] flex -translate-x-1/2 -translate-y-full flex-col items-center" aria-hidden="true">
+          <span class="grid h-11 w-11 place-items-center rounded-full bg-accent text-white shadow-lg"><i data-lucide="map-pin" class="h-5 w-5"></i></span>
+          <span class="h-3 w-0.5 bg-accent"></span>
+        </span>
+        <span class="absolute bottom-6 left-6 inline-flex items-center gap-2 rounded-full bg-surface px-4 py-2.5 text-[14px] font-semibold shadow">Open in Google Maps <i data-lucide="external-link" class="h-4 w-4"></i></span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ======================================================
+     PAGE: PRIVACY POLICY
+     ====================================================== -->
+<section class="page" data-page="privacy" aria-labelledby="privacy-title">
+  <div class="mx-auto max-w-3xl px-5 pb-24 pt-14 lg:pt-20">
+    <h1 id="privacy-title" class="display text-[40px] font-extrabold leading-[1.05] sm:text-[52px]">Privacy policy</h1>
+    <p class="mt-4 text-[15px] text-muted">Last updated: [date]</p>
+    <div class="prose-sv mt-8">
+      <p>PT Satu Visual Indonesia (“Satu Visual”, “we”) respects your privacy. This policy explains what personal data we collect through satuvisual.co.id and our enquiry channels, how we use it, and your rights under Indonesia’s Personal Data Protection Law (Law No. 27 of 2022).</p>
+      <h2>Data we collect</h2>
+      <ul>
+        <li>Contact details you give us: name, company, email address and phone/WhatsApp number.</li>
+        <li>Enquiry details, such as project category, products of interest and messages.</li>
+        <li>Technical data such as browser type, pages visited and cookies, used to run and improve the site.</li>
+      </ul>
+      <h2>How we use it</h2>
+      <ul>
+        <li>To answer enquiries, prepare quotations and provide product support and warranty service.</li>
+        <li>To manage partner and dealer relationships.</li>
+        <li>To send product news and event invitations, only if you opt in. You can unsubscribe at any time.</li>
+      </ul>
+      <h2>WhatsApp enquiries</h2>
+      <p>When you use our quote form, your details are placed into a WhatsApp message that you send yourself. WhatsApp’s own privacy policy applies to that message.</p>
+      <h2>Sharing</h2>
+      <p>We do not sell personal data. We may share it with the manufacturers we represent or with service providers (for example logistics or warranty service) only as needed to fulfil your request, or when required by law.</p>
+      <h2>Retention and security</h2>
+      <p>We keep personal data only as long as needed for the purposes above or as required by law, and protect it with reasonable technical and organisational measures.</p>
+      <h2>Your rights</h2>
+      <p>You may request access to, correction of, or deletion of your personal data, or withdraw consent, by emailing <a class="text-accentink underline" href="mailto:info@satuvisual.co.id">info@satuvisual.co.id</a>.</p>
+      <h2>Contact</h2>
+      <p>PT Satu Visual Indonesia, Jl. Taman Palem Lestari, Ruko Pelangi Blok D No. 20, Cengkareng, Jakarta Barat 11730 · +62 811 804 7717</p>
+      <p class="mt-8 text-[14px]">This is a template and should be reviewed by your legal advisor before publishing.</p>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- ================= FOOTER ================= -->
+<footer class="border-t border-line">
+  <div class="mx-auto grid max-w-7xl gap-12 px-5 py-16 lg:grid-cols-12 lg:px-8">
+    <div class="flex flex-col gap-5 lg:col-span-5">
+      <span class="display text-[22px] font-extrabold">Satu Visual Indonesia</span>
+      <p class="max-w-[42ch] text-[15px] leading-relaxed text-muted">NDI®-focused distributor and solutions partner for broadcast, worship and pro AV since 2019.</p>
+      <form id="newsletterForm" class="flex max-w-md flex-col gap-2" novalidate>
+        <label for="nlEmail" class="text-[14px] font-medium">Get product news and event invites</label>
+        <div class="flex gap-2">
+          <input id="nlEmail" type="email" autocomplete="email" class="field rounded-full" placeholder="you@company.com">
+          <button type="submit" class="flex-none rounded-full bg-accent px-5 text-[15px] font-semibold text-white hover:bg-accent/90">Subscribe</button>
+        </div>
+        <p id="nlMsg" class="min-h-[20px] text-[14px] text-muted" role="status"></p>
+      </form>
+    </div>
+    <div class="grid grid-cols-2 gap-8 sm:grid-cols-3 lg:col-span-7">
+      <div class="flex flex-col gap-3 text-[15px]"><span class="font-semibold">Company</span><a href="#ndi" class="text-muted hover:text-ink">NDI® solutions</a><a href="#about" class="text-muted hover:text-ink">About us</a><a href="#projects" class="text-muted hover:text-ink">Projects</a><a href="#news" class="text-muted hover:text-ink">News &amp; events</a><a href="#privacy" class="text-muted hover:text-ink">Privacy policy</a></div>
+      <div class="flex flex-col gap-3 text-[15px]"><span class="font-semibold">Brands</span><a href="https://www.telycam.com" target="_blank" rel="noopener" class="text-muted hover:text-ink">Telycam</a><a href="https://www.magewell.com" target="_blank" rel="noopener" class="text-muted hover:text-ink">Magewell</a><span class="text-muted">CNDLive</span></div>
+      <div class="flex flex-col gap-3 text-[15px]"><span class="font-semibold">Follow us</span>
+        <a href="https://www.youtube.com/channel/UCHQgXBd3UPEv_3BppQFxrHw" target="_blank" rel="noopener" class="text-muted hover:text-ink">YouTube</a>
+        <a href="https://www.instagram.com/satuvisual.id/" target="_blank" rel="noopener" class="text-muted hover:text-ink">Instagram</a>
+        <a href="https://www.tiktok.com/@[handle]" target="_blank" rel="noopener" class="text-muted hover:text-ink">TikTok</a>
+        <a href="https://www.linkedin.com/company/31535085" target="_blank" rel="noopener" class="text-muted hover:text-ink">LinkedIn</a>
+      </div>
+    </div>
+  </div>
+  <div class="border-t border-line">
+    <div class="mx-auto flex max-w-7xl flex-col gap-2 px-5 py-6 text-[14px] text-muted sm:flex-row sm:justify-between lg:px-8">
+      <span>© 2026 PT Satu Visual Indonesia. All rights reserved.</span>
+      <span>Jakarta Barat, Indonesia</span>
+    </div>
+  </div>
+</footer>
+
+<!-- ================= FLOATING WHATSAPP BUTTON ================= -->
+<button type="button" data-open-quote class="wa-fab fixed right-5 z-40 inline-flex items-center gap-2.5 rounded-full bg-[#1FAF5A] py-3.5 pl-4 pr-5 text-[15px] font-semibold text-white shadow-[0_12px_30px_rgba(0,0,0,0.35)] hover:bg-[#1a9a4f]" aria-label="Request a quote on WhatsApp">
+  <svg viewBox="0 0 24 24" class="h-6 w-6" aria-hidden="true" fill="currentColor"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm0 18.2a8.2 8.2 0 0 1-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2Zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8s-.4-.1-.6.1-.7.8-.8 1-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.3-.4.2-.4.7-1.4a.5.5 0 0 0 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 2.9 2.9 0 0 0-.9 2.2 5.1 5.1 0 0 0 1 2.7 11.7 11.7 0 0 0 4.5 4c1.7.7 2.3.8 3.2.6a2.7 2.7 0 0 0 1.8-1.2 2.2 2.2 0 0 0 .2-1.2c-.1-.1-.3-.2-.5-.3Z"/></svg>
+  <span class="hidden sm:inline">Chat with us</span>
+</button>
+
+<!-- ================= QUOTE DRAWER (WhatsApp form) ================= -->
+<div id="quoteDrawer" data-open="false" class="fixed inset-0 z-[70]" aria-hidden="true">
+  <div class="overlay absolute inset-0 bg-black/55" data-close-quote></div>
+  <div class="drawer absolute inset-x-0 bottom-0 flex max-h-[92vh] flex-col overflow-y-auto rounded-t-[26px] border border-line bg-surface sm:inset-y-3 sm:left-auto sm:right-3 sm:max-h-none sm:w-[460px] sm:rounded-[26px]" role="dialog" aria-modal="true" aria-labelledby="quoteTitle">
+    <div class="flex items-start justify-between gap-4 border-b border-line px-6 pb-5 pt-6">
+      <div>
+        <h2 id="quoteTitle" class="display text-[24px] font-bold">Request a quote</h2>
+        <p class="mt-1 text-[14px] text-muted">Fill this in and we’ll open WhatsApp with your details ready to send.</p>
+      </div>
+      <button type="button" class="grid h-11 w-11 flex-none place-items-center rounded-full border border-line" data-close-quote aria-label="Close"><i data-lucide="x" class="h-5 w-5"></i></button>
+    </div>
+
+    <form id="quoteForm" class="flex flex-1 flex-col gap-5 px-6 py-6" novalidate>
+      <div class="grid gap-5" data-form-fields></div>
+      <label class="flex flex-col gap-2 text-[14px] font-medium">Product of interest <span class="font-normal text-muted">(optional)</span>
+        <input name="product" class="field" placeholder="e.g. Telycam Mix One">
+      </label>
+      <p class="form-error hidden text-[14px] font-medium text-tally" role="alert"></p>
+      <div class="mt-auto flex flex-col gap-3 pt-2">
+        <button type="submit" class="inline-flex items-center justify-center gap-2.5 rounded-full bg-[#1FAF5A] px-6 py-4 text-[16px] font-semibold text-white hover:bg-[#1a9a4f]">
+          <i data-lucide="send" class="h-5 w-5"></i>Continue to WhatsApp
+        </button>
+        <p class="text-center text-[13px] text-muted">Messages go to Satu Visual Indonesia, +62 811 804 7717.</p>
+      </div>
+    </form>
+
+    <div id="quoteDone" class="hidden flex-1 flex-col items-center justify-center gap-4 px-8 py-16 text-center">
+      <span class="grid h-14 w-14 place-items-center rounded-full bg-[#1FAF5A]/15 text-[#1FAF5A]"><i data-lucide="check" class="h-7 w-7"></i></span>
+      <h3 class="display text-[22px] font-bold">WhatsApp is opening</h3>
+      <p class="max-w-[32ch] text-[15px] text-muted">Press send in WhatsApp to deliver your enquiry. If it didn’t open, use the link below.</p>
+      <a id="quoteFallback" href="https://wa.me/628118047717" target="_blank" rel="noopener" class="rounded-full border border-line px-5 py-3 text-[15px] font-semibold">Open WhatsApp</a>
+      <button type="button" data-close-quote class="py-2 text-[15px] text-muted underline">Close</button>
+    </div>
+  </div>
+</div>
+
+<!-- ================= PRODUCT DETAIL MODAL ================= -->
+<div id="productModal" data-open="false" class="fixed inset-0 z-[65]" aria-hidden="true">
+  <div class="overlay absolute inset-0 bg-black/60" data-close-product></div>
+  <div class="drawer absolute inset-x-0 bottom-0 max-h-[92vh] overflow-y-auto rounded-t-[26px] border border-line bg-surface sm:inset-y-3 sm:left-auto sm:right-3 sm:max-h-none sm:w-[560px] sm:rounded-[26px]" role="dialog" aria-modal="true" aria-labelledby="pmTitle">
+    <div id="pmBody"></div>
+  </div>
+</div>
+
+<script>
+(function () {
+  'use strict';
+
+  /* =========================================================
+     CONFIG
+     ========================================================= */
+  var WA_NUMBER = '628118047717';
+  var CATEGORIES = ['House of Worship', 'Broadcast', 'Live Streaming', 'Corporate', 'Education', 'E-commerce'];
+
+  /* =========================================================
+     PRODUCT ILLUSTRATIONS (line art, inherits currentColor)
+     ========================================================= */
+  var ART = {
+    mixone: '<svg viewBox="0 0 260 150" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><path d="M18 128 L38 34 H222 L242 128 Z"/><path d="M18 128 H242 V138 H18 Z"/><rect x="52" y="46" width="96" height="54" rx="5"/><path class="anim-draw" pathLength="100" d="M60 92 L84 70 L100 82 L118 62 L140 92"/><g><circle cx="58" cy="114" r="5"/><circle cx="76" cy="114" r="5"/><circle cx="94" cy="114" r="5"/><circle cx="112" cy="114" r="5"/><circle cx="130" cy="114" r="5"/><circle cx="148" cy="114" r="5"/></g><circle class="anim-tally" cx="58" cy="114" r="5" fill="#EE292E" stroke="#EE292E"/><circle cx="194" cy="92" r="22"/><g class="anim-stick"><path d="M194 92 V58"/><circle cx="194" cy="52" r="9" fill="currentColor"/></g><rect x="164" y="46" width="12" height="8" rx="2"/><rect x="212" y="46" width="12" height="8" rx="2"/></svg>',
+    explore: '<svg viewBox="0 0 200 170" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><rect x="46" y="132" width="108" height="26" rx="7"/><path d="M58 132 V80 H66 M142 132 V80 H134"/><g class="anim-ptz"><rect x="66" y="38" width="68" height="84" rx="30"/><g class="anim-lens"><circle cx="100" cy="80" r="24"/><circle cx="100" cy="80" r="14"/><circle cx="100" cy="80" r="5" fill="currentColor"/></g><circle class="anim-tally" cx="120" cy="52" r="3.5" fill="#EE292E" stroke="none"/></g><path d="M84 145 H116"/></svg>',
+    directorplus: '<svg viewBox="0 0 220 160" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><path d="M150 26 L160 6 M178 26 L184 8"/><rect x="24" y="26" width="172" height="112" rx="12"/><rect x="36" y="38" width="148" height="78" rx="4"/><path d="M110 38 V116 M36 77 H184"/><rect class="anim-pgm" x="40" y="42" width="66" height="31" rx="2" stroke="#EE292E"/><circle cx="110" cy="127" r="4"/></svg>',
+    x1: '<svg viewBox="0 -18 220 178" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><path d="M62 44 V14 M110 44 V8 M158 44 V14"/><g class="anim-waves"><path class="w1" d="M100 0 Q110 -8 120 0"/><path class="w2" d="M93 -6 Q110 -19 127 -6"/></g><rect x="34" y="44" width="152" height="100" rx="14"/><rect x="50" y="58" width="92" height="62" rx="4"/><path class="anim-draw" pathLength="100" d="M58 106 L78 86 L92 98 L108 80 L134 106"/><circle cx="164" cy="72" r="6"/><circle cx="164" cy="98" r="6"/><circle class="anim-tally" cx="62" cy="68" r="3" fill="#EE292E" stroke="none"/><path d="M50 132 H90"/></svg>',
+    meet: '<svg viewBox="0 0 200 120" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><rect x="30" y="40" width="140" height="40" rx="20"/><circle cx="100" cy="60" r="12"/><circle cx="100" cy="60" r="5" fill="currentColor"/><path d="M50 56 V64 M58 54 V66 M142 54 V66 M150 56 V64"/><path d="M90 80 L86 96 H114 L110 80"/></svg>',
+    sono: '<svg viewBox="0 0 200 120" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><ellipse cx="100" cy="66" rx="70" ry="26"/><ellipse cx="100" cy="58" rx="70" ry="26"/><circle cx="100" cy="58" r="10"/><path d="M60 58 h6 M134 58 h6"/></svg>'
+  };
+
+  /* =========================================================
+     PRODUCTS — specs from manufacturer announcements & dealer listings
+     ========================================================= */
+  var PRODUCTS = {
+    mixone: {
+      brand: 'Telycam', name: 'Mix One', kind: 'All-in-one IP video switcher',
+      blurb: 'Switching, graphics, recording, streaming and PTZ control in one compact console — built for PTZ-first production.',
+      chips: ['NDI® inputs', '4K', 'PTZ joystick'],
+      specs: [
+        ['Inputs', 'Up to 6 sources: NDI®, SRT, RTMP, RTSP, HDMI and USB-C'],
+        ['Video', '4K production and output'],
+        ['Camera control', 'Hall-effect joystick for precise PTZ moves'],
+        ['Audio', 'Stereo and XLR inputs'],
+        ['Workflow', 'Switching, graphics overlays, recording and streaming'],
+        ['Interface', 'Built-in touchscreen; PoE++ support']
+      ],
+      link: 'https://www.telycam.com', art: 'mixone'
+    },
+    explore: {
+      brand: 'Telycam', name: 'Explore Gen 2', kind: 'Broadcast PTZ camera series',
+      blurb: 'Explore 100, 300 and 500: brushless motors and 3-axis sync for fluid, natural camera moves.',
+      chips: ['Up to 4/3" sensor', '20–30x zoom', 'NDI®'],
+      specs: [
+        ['Explore 500', 'Sony 4/3" 9MP sensor, 20x zoom, NDI® High Bandwidth & HX, 12G-SDI with genlock, SFP+, variable ND'],
+        ['Explore 300', '4/3" sensor, 20x zoom, 4K60 HDMI & NDI HX3, 4K30 USB-C, 1080p60 3G-SDI'],
+        ['Explore 100', 'Sony 1/1.8" 9MP sensor, 30x zoom, 12G-SDI, AI auto-tracking'],
+        ['Motion', 'Brushless DC motor with 3-axis preset sync'],
+        ['Autofocus', 'Hybrid AF on Explore 300/500; OLPF to reduce moiré on LED walls'],
+        ['Streaming', 'SRT, RTMP and RTSP; SD card recording']
+      ],
+      link: 'https://www.telycam.com', art: 'explore'
+    },
+    directorplus: {
+      brand: 'Magewell', name: 'Director Plus', kind: 'Portable 4K production system',
+      blurb: 'A 7-inch all-in-one 4K switcher, recorder and streamer with built-in 5G — no computer needed.',
+      chips: ['NDI® + SRT', '4K60', '5G'],
+      specs: [
+        ['Inputs', '4× HDMI and 2× USB AV, plus IP sources'],
+        ['Video', '4K60 production'],
+        ['IP', 'SRT and NDI® support'],
+        ['Network', 'Built-in 5G modem, 2.5 GbE, Wi-Fi'],
+        ['Streaming', 'Multi-destination streaming with recording'],
+        ['Control', '7" touchscreen, Director Utility app and API']
+      ],
+      link: 'https://www.magewell.com', art: 'directorplus'
+    },
+    x1: {
+      brand: 'CNDLive', name: 'X1', kind: 'Portable bonding encoder & monitor',
+      blurb: 'An H.265 bonding encoder with a 5.5" touchscreen for stable live streams from the field.',
+      chips: ['H.265', '3× 4G SIM', 'HDMI + SDI'],
+      specs: [
+        ['Inputs', '4K30 HDMI and 1080p60 3G-SDI'],
+        ['Encoding', 'H.265/HEVC and H.264'],
+        ['Bonding', 'Up to seven network links, including 3× 4G SIM slots'],
+        ['Monitor', '5.5" LCD touchscreen'],
+        ['Recording', 'TF card or USB drive (TS, MOV, MP4)'],
+        ['Management', 'Local web UI or CNDLive Manager']
+      ],
+      link: 'https://usbroadcast.co/product/cndlive-x1-hdmi-sdi-4g-bonding-video-encoder-and-monitor/', art: 'x1'
+    }
+  };
+
+  var TELYCAM_LINES = {
+    broadcast: [
+      { name: 'Explore 500', note: 'Flagship 4/3" sensor PTZ with NDI® High Bandwidth, 12G-SDI and SFP+.', art: 'explore', key: 'explore' },
+      { name: 'Explore 300', note: '4/3" sensor, 20x zoom, 4K60 over HDMI and NDI HX3.', art: 'explore', key: 'explore' },
+      { name: 'Explore 100', note: 'Entry broadcast PTZ with 30x zoom and AI auto-tracking.', art: 'explore', key: 'explore' }
+    ],
+    production: [
+      { name: 'Mix One', note: 'All-in-one IP switcher with a built-in PTZ joystick.', art: 'mixone', key: 'mixone' },
+      { name: 'PTZ controllers', note: 'V-JOY+ joysticks for multi-camera PTZ control, including over NDI®.', art: 'mixone', key: null },
+      { name: 'Accessories', note: 'Mounts and accessories for Telycam installs.', art: 'explore', key: null }
+    ],
+    conferencing: [
+      { name: 'Meet Bar', note: '4K USB camera with built-in soundbar.', art: 'meet', key: null },
+      { name: 'Meet+ 200', note: '4K UHD USB webcam for meeting rooms.', art: 'meet', key: null },
+      { name: 'SONO speakerphone', note: 'Bluetooth conference speakerphone.', art: 'sono', key: null }
+    ]
+  };
+
+  /* YouTube videos: id = video ID, start = start time in seconds.
+     Thumbnails and inline playback load from YouTube on your own hosting. */
+  var VIDEOS = [
+    { id: 'OvhgEG4T3oo', start: 24, title: 'Johan Zhang presents NDI® at ProAVL 2025', tag: 'Talk — ProAVL 2025' },
+    { id: 'QPOJHy153xs', start: 0, title: '[Video title — NDI®]', tag: 'NDI®' },
+    { id: 'Vnq4URvFfSA', start: 0, title: '[Video title]', tag: 'Reference project' }
+  ];
+  var YT_CHANNEL = 'https://www.youtube.com/channel/UCHQgXBd3UPEv_3BppQFxrHw';
+
+  /* Replace with real project references */
+  var PROJECTS = [
+    { cat: 'House of Worship', client: '[Church name]', title: '[Sanctuary moved from SDI to NDI®]', place: '[City, year]', gear: 'Telycam Explore, Mix One' },
+    { cat: 'House of Worship', client: '[Church name]', title: '[NDI® feeds to overflow rooms and lobby]', place: '[City, year]', gear: 'Magewell Pro Convert' },
+    { cat: 'Broadcast', client: '[Client name]', title: '[Multi-camera PTZ studio]', place: '[City, year]', gear: 'Telycam Explore, Mix One' },
+    { cat: 'Live Streaming', client: '[Client name]', title: '[Outdoor event stream]', place: '[City, year]', gear: 'CNDLive X1' },
+    { cat: 'Education', client: '[University name]', title: '[Lecture capture rooms]', place: '[City, year]', gear: 'Telycam, Magewell' },
+    { cat: 'Corporate', client: '[Company name]', title: '[Town hall production]', place: '[City, year]', gear: 'Magewell Director Plus' },
+    { cat: 'E-commerce', client: '[Brand name]', title: '[Live selling studio]', place: '[City, year]', gear: 'Telycam, Magewell' },
+    { cat: 'Broadcast', client: '[Client name]', title: '[Remote production kit]', place: '[City, year]', gear: 'CNDLive, Telycam' },
+    { cat: 'Corporate', client: '[Company name]', title: '[Boardroom video conferencing]', place: '[City, year]', gear: 'Telycam Meet Bar' },
+    { cat: 'Education', client: '[School name]', title: '[Hybrid classroom]', place: '[City, year]', gear: 'Telycam Explore' },
+    { cat: 'House of Worship', client: '[Church name]', title: '[HDMI to NDI® upgrade for weekly services]', place: '[City, year]', gear: 'Telycam, Mix One' }
+  ];
+
+  var NEWS = [
+    { type: 'Article', cat: 'Knowledge', date: 'Jun 13, 2025', title: 'IRL live streaming gear guide: what you actually need', url: 'https://satuvisual.co.id/2025/06/13/irl-live-streaming-gear-guide-apa-saja-yang-kamu-perlukan/' },
+    { type: 'Article', cat: 'Product', date: 'Feb 18, 2025', title: 'Director Mini: a simple, powerful live streaming workhorse', url: 'https://satuvisual.co.id/2025/02/18/director-mini-device-andalan-live-streaming-yang-simple-powerful/' },
+    { type: 'Article', cat: 'Product', date: 'Feb 13, 2025', title: 'Choosing a compact streaming switcher: what to compare', url: 'https://satuvisual.co.id/2025/02/13/rgblink-mini-2022-vs-rgblink-mini-iso-mana-yang-lebih-cocok-untuk-anda/' },
+    { type: 'Event', cat: 'Exhibition', date: '[Date]', title: '[Exhibition name] — see Telycam Mix One and Explore Gen 2 live', url: '' },
+    { type: 'Event', cat: 'Talk', date: '2025', title: 'Johan Zhang presents NDI® at ProAVL 2025', url: 'https://www.youtube.com/watch?v=OvhgEG4T3oo&t=24s' },
+    { type: 'Article', cat: 'Announcement', date: '[Date]', title: '[Announcement title]', url: '' }
+  ];
+
+  /* =========================================================
+     HELPERS
+     ========================================================= */
+  function $(s, r) { return (r || document).querySelector(s); }
+  function $$(s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); }
+  function esc(s) { return String(s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
+  function icons() { if (window.lucide) window.lucide.createIcons(); }
+  var REDUCE = !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+
+  /* =========================================================
+     HERO PRODUCT TILES
+     ========================================================= */
+  function renderHeroTiles() {
+    $$('[data-hero-product]').forEach(function (el) {
+      var key = el.getAttribute('data-hero-product');
+      var p = PRODUCTS[key];
+      var wide = key === 'mixone' || key === 'x1';
+      el.innerHTML =
+        '<div class="flex h-full ' + (wide ? 'flex-col sm:flex-row' : 'flex-col') + ' gap-6 p-7">' +
+          '<div class="flex flex-1 flex-col gap-3 ' + (wide ? 'sm:max-w-[48%]' : '') + '">' +
+            '<span class="text-[14px] font-medium text-muted">' + esc(p.brand) + ' · ' + esc(p.kind) + '</span>' +
+            '<h3 class="display text-[28px] font-extrabold leading-tight">' + esc(p.name) + '</h3>' +
+            '<p class="text-[15px] leading-relaxed text-muted">' + esc(p.blurb) + '</p>' +
+            '<div class="specs mt-1 flex flex-wrap gap-2">' +
+              p.chips.map(function (c) { return '<span class="rounded-full border border-line px-3 py-1.5 text-[13px] font-medium">' + esc(c) + '</span>'; }).join('') +
+            '</div>' +
+            '<button type="button" class="mt-auto inline-flex items-center gap-2 self-start pt-3 text-[15px] font-semibold text-accentink" data-product="' + key + '">View specs <i data-lucide="arrow-up-right" class="h-4 w-4"></i></button>' +
+          '</div>' +
+          '<div class="tile-art flex flex-1 items-center justify-center ' + (wide ? 'min-h-[150px]' : 'min-h-[130px]') + '">' +
+            '<div class="w-full ' + (wide ? 'max-w-[300px]' : 'max-w-[210px]') + '">' + ART[p.art] + '</div>' +
+          '</div>' +
+        '</div>';
+    });
+  }
+
+  /* =========================================================
+     TELYCAM TABS
+     ========================================================= */
+  function renderTelycam(line) {
+    $('#tely-panel').innerHTML = TELYCAM_LINES[line].map(function (it, n) {
+      var action = it.key
+        ? '<button type="button" class="text-[15px] font-semibold text-accentink" data-product="' + it.key + '">View specs</button>'
+        : '<button type="button" class="text-[15px] font-semibold text-accentink" data-open-quote data-quote-product="Telycam ' + esc(it.name) + '">Ask for price</button>';
+      return '<div class="tile swap-in flex flex-col gap-5 bg-bg p-7" style="animation-delay:' + (n * 80) + 'ms">' +
+        '<div class="tile-art flex h-36 items-center justify-center"><div class="w-full max-w-[190px]">' + ART[it.art] + '</div></div>' +
+        '<div class="flex flex-col gap-2"><h3 class="display text-[21px] font-bold">' + esc(it.name) + '</h3>' +
+        '<p class="text-[15px] leading-relaxed text-muted">' + esc(it.note) + '</p></div>' +
+        '<div class="mt-auto">' + action + '</div></div>';
+    }).join('');
+    $$('[data-tely-tab]').forEach(function (b) { b.setAttribute('aria-selected', String(b.getAttribute('data-tely-tab') === line)); });
+    icons();
+  }
+
+  /* =========================================================
+     VIDEOS
+     ========================================================= */
+  function ytUrl(v) { return 'https://www.youtube.com/watch?v=' + v.id + (v.start ? '&t=' + v.start + 's' : ''); }
+  function videoCard(v, i, big) {
+    return '<div class="flex flex-col gap-3">' +
+      '<div class="group relative aspect-video overflow-hidden rounded-[18px] border border-line bg-surface2" data-video="' + i + '">' +
+        '<span class="raster absolute inset-0" aria-hidden="true"></span>' +
+        '<img src="https://i.ytimg.com/vi/' + encodeURIComponent(v.id) + '/hqdefault.jpg" alt="" loading="lazy" class="absolute inset-0 h-full w-full object-cover">' +
+        '<button type="button" class="absolute inset-0 grid place-items-center" aria-label="Play: ' + esc(v.title) + '">' +
+          '<span class="grid ' + (big ? 'h-16 w-16' : 'h-12 w-12') + ' place-items-center rounded-full bg-tally text-white shadow-lg transition-transform group-hover:scale-105"><i data-lucide="play" class="ml-0.5 ' + (big ? 'h-7 w-7' : 'h-5 w-5') + '"></i></span>' +
+        '</button>' +
+      '</div>' +
+      '<div class="flex flex-col gap-1">' +
+        '<span class="text-[13px] font-medium text-muted">' + esc(v.tag) + '</span>' +
+        '<span class="' + (big ? 'display text-[22px] font-bold' : 'text-[16px] font-semibold') + ' leading-snug">' + esc(v.title) + '</span>' +
+        '<a href="' + esc(ytUrl(v)) + '" target="_blank" rel="noopener" class="mt-1 inline-flex items-center gap-1.5 self-start py-1 text-[14px] font-medium text-accentink">Watch on YouTube <i data-lucide="external-link" class="h-3.5 w-3.5"></i></a>' +
+      '</div></div>';
+  }
+  function renderVideos() {
+    $('#videoGrid').innerHTML =
+      '<div class="lg:col-span-7">' + videoCard(VIDEOS[0], 0, true) + '</div>' +
+      '<div class="flex flex-col gap-6 lg:col-span-5">' + VIDEOS.slice(1).map(function (v, k) { return videoCard(v, k + 1, false); }).join('') + '</div>';
+    $$('[data-video-card]').forEach(function (el) {
+      var i = +el.getAttribute('data-video-card');
+      el.innerHTML = videoCard(VIDEOS[i], i, true);
+    });
+    $$('[data-video] img').forEach(function (img) {
+      if (img.complete && !img.naturalWidth) { img.remove(); return; }
+      img.addEventListener('error', function () { img.remove(); });
+    });
+    $$('[data-video] button').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var slot = btn.closest('[data-video]');
+        var v = VIDEOS[+slot.getAttribute('data-video')];
+        slot.className = 'relative aspect-video overflow-hidden rounded-[18px] border border-line bg-black';
+        slot.innerHTML = '<iframe class="absolute inset-0 h-full w-full" src="https://www.youtube-nocookie.com/embed/' + encodeURIComponent(v.id) + '?autoplay=1&start=' + (v.start || 0) + '" title="' + esc(v.title) + '" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe>';
+      });
+    });
+    icons();
+  }
+
+  /* =========================================================
+     PROJECTS
+     ========================================================= */
+  var CAT_ICON = { 'House of Worship': 'church', 'Broadcast': 'tv', 'Live Streaming': 'radio', 'Corporate': 'building-2', 'Education': 'graduation-cap', 'E-commerce': 'shopping-bag' };
+  function projectCard(p) {
+    return '<article class="tile swap-in flex flex-col overflow-hidden">' +
+      '<div class="relative aspect-[4/3] bg-surface2">' +
+        '<span class="raster absolute inset-0" aria-hidden="true"></span>' +
+        '<span class="absolute inset-0 grid place-items-center text-[13px] text-muted">[Project photo]</span>' +
+        '<span class="absolute left-4 top-4 inline-flex items-center gap-1.5 rounded-full bg-surface px-3 py-1.5 text-[13px] font-medium"><i data-lucide="' + CAT_ICON[p.cat] + '" class="h-3.5 w-3.5"></i>' + esc(p.cat) + '</span>' +
+      '</div>' +
+      '<div class="flex flex-1 flex-col gap-2 p-6">' +
+        '<span class="text-[14px] text-muted">' + esc(p.client) + ' — ' + esc(p.place) + '</span>' +
+        '<h3 class="display text-[20px] font-bold leading-snug">' + esc(p.title) + '</h3>' +
+        '<p class="mt-auto pt-3 text-[14px] text-muted">Gear: <span class="text-ink">' + esc(p.gear) + '</span></p>' +
+      '</div></article>';
+  }
+  function renderProjects(cat) {
+    var list = cat === 'All' ? PROJECTS : PROJECTS.filter(function (p) { return p.cat === cat; });
+    $('#projectGrid').innerHTML = list.length ? list.map(projectCard).join('') : '<p class="text-muted">No projects in this category yet.</p>';
+    $$('#projectFilters button').forEach(function (b) { b.setAttribute('aria-pressed', String(b.textContent === cat)); });
+    icons();
+  }
+  function renderFilters(container, items, onPick) {
+    container.innerHTML = items.map(function (c, i) {
+      return '<button type="button" class="chip-btn rounded-full border border-line px-4 py-2.5 text-[15px] font-medium" aria-pressed="' + (i === 0) + '">' + esc(c) + '</button>';
+    }).join('');
+    $$('button', container).forEach(function (b) { b.addEventListener('click', function () { onPick(b.textContent); }); });
+  }
+
+  /* =========================================================
+     NEWS
+     ========================================================= */
+  function renderNews(filter) {
+    var list = filter === 'All' ? NEWS : NEWS.filter(function (n) { return n.type === filter; });
+    $('#newsGrid').innerHTML = list.map(function (n) {
+      var tag = n.url ? 'a' : 'div';
+      var attrs = n.url ? ' href="' + esc(n.url) + '" target="_blank" rel="noopener"' : '';
+      return '<' + tag + attrs + ' class="group flex flex-col gap-4">' +
+        '<div class="relative aspect-[16/10] overflow-hidden rounded-[18px] border border-line bg-surface">' +
+          '<span class="raster absolute inset-0" aria-hidden="true"></span>' +
+          '<span class="absolute inset-0 grid place-items-center text-[13px] text-muted">[' + (n.type === 'Event' ? 'Event photo' : 'Article image') + ']</span>' +
+          (n.type === 'Event' ? '<span class="absolute left-4 top-4 inline-flex items-center gap-1.5 rounded-full bg-tally px-3 py-1.5 text-[12px] font-semibold text-white"><i data-lucide="calendar" class="h-3.5 w-3.5"></i>Event</span>' : '') +
+        '</div>' +
+        '<span class="text-[14px] text-muted">' + esc(n.cat) + ' — ' + esc(n.date) + '</span>' +
+        '<h3 class="display text-[21px] font-bold leading-snug ' + (n.url ? 'group-hover:text-accentink' : '') + '">' + esc(n.title) + '</h3>' +
+      '</' + tag + '>';
+    }).join('');
+    $$('#newsFilters button').forEach(function (b) { b.setAttribute('aria-pressed', String(b.textContent === filter)); });
+    icons();
+  }
+
+  /* =========================================================
+     FORMS (shared fields for drawer + contact page)
+     ========================================================= */
+  function fieldsHTML(prefix) {
+    return '' +
+      '<label class="flex flex-col gap-2 text-[14px] font-medium">Full name *<input name="name" class="field" autocomplete="name" required></label>' +
+      '<label class="flex flex-col gap-2 text-[14px] font-medium">Company / institution<input name="company" class="field" autocomplete="organization"></label>' +
+      '<label class="flex flex-col gap-2 text-[14px] font-medium">Email *<input name="email" type="email" class="field" autocomplete="email" required></label>' +
+      '<label class="flex flex-col gap-2 text-[14px] font-medium">Phone / WhatsApp *<input name="phone" type="tel" class="field" autocomplete="tel" placeholder="08xx or +62…" required></label>' +
+      '<fieldset class="flex flex-col gap-2 sm:col-span-2"><legend class="mb-2 text-[14px] font-medium">Project category *</legend><div class="flex flex-wrap gap-2">' +
+        CATEGORIES.map(function (c, i) {
+          var id = prefix + '-cat-' + i;
+          return '<span><input type="radio" class="peer sr-only" name="category" id="' + id + '" value="' + c + '"><label for="' + id + '" class="inline-flex min-h-[44px] cursor-pointer items-center rounded-full border border-line px-4 text-[14px] font-medium peer-checked:border-accent peer-checked:bg-accent peer-checked:text-white peer-focus-visible:outline peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2">' + c + '</label></span>';
+        }).join('') +
+      '</div></fieldset>';
+  }
+
+  function validate(form) {
+    var errs = [];
+    var name = form.elements.name, email = form.elements.email, phone = form.elements.phone;
+    [name, email, phone].forEach(function (f) { f.removeAttribute('aria-invalid'); });
+    if (!name.value.trim()) { errs.push('your name'); name.setAttribute('aria-invalid', 'true'); }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.value.trim())) { errs.push('a valid email'); email.setAttribute('aria-invalid', 'true'); }
+    if (phone.value.replace(/\D/g, '').length < 8) { errs.push('a phone number'); phone.setAttribute('aria-invalid', 'true'); }
+    var cat = form.querySelector('input[name="category"]:checked');
+    if (!cat) errs.push('a project category');
+    var box = $('.form-error', form);
+    if (errs.length) {
+      box.textContent = 'Please add ' + errs.join(', ') + '.';
+      box.classList.remove('hidden');
+      var firstBad = form.querySelector('[aria-invalid="true"]') || form.querySelector('input[name="category"]');
+      if (firstBad) firstBad.focus();
+      return null;
+    }
+    box.classList.add('hidden');
+    return {
+      name: name.value.trim(), company: form.elements.company.value.trim(), email: email.value.trim(),
+      phone: phone.value.trim(), category: cat.value,
+      product: form.elements.product ? form.elements.product.value.trim() : '',
+      message: form.elements.message ? form.elements.message.value.trim() : ''
+    };
+  }
+
+  function waLink(d) {
+    var lines = [
+      'Hello Satu Visual Indonesia, I would like to discuss a project.',
+      '',
+      'Name: ' + d.name,
+      'Company: ' + (d.company || '-'),
+      'Email: ' + d.email,
+      'Phone: ' + d.phone,
+      'Project category: ' + d.category
+    ];
+    if (d.product) lines.push('Product of interest: ' + d.product);
+    if (d.message) lines.push('', 'Message: ' + d.message);
+    return 'https://wa.me/' + WA_NUMBER + '?text=' + encodeURIComponent(lines.join('\n'));
+  }
+
+  /* =========================================================
+     DIALOGS (drawer + product modal)
+     ========================================================= */
+  var lastFocus = null;
+  function openLayer(el, focusSel) {
+    lastFocus = document.activeElement;
+    el.setAttribute('data-open', 'true');
+    el.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+    setTimeout(function () { var f = $(focusSel, el); if (f) f.focus(); }, 60);
+  }
+  function closeLayer(el) {
+    el.setAttribute('data-open', 'false');
+    el.setAttribute('aria-hidden', 'true');
+    if ($('#quoteDrawer').getAttribute('data-open') !== 'true' && $('#productModal').getAttribute('data-open') !== 'true') document.body.style.overflow = '';
+    if (lastFocus && lastFocus.focus) lastFocus.focus();
+  }
+  function trapFocus(layer, e) {
+    var f = $$('a[href], button:not([disabled]), input, textarea, select', layer).filter(function (n) { return n.offsetParent !== null; });
+    if (!f.length) return;
+    var first = f[0], last = f[f.length - 1];
+    if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+    else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+  }
+
+  function openQuote(product) {
+    var d = $('#quoteDrawer');
+    $('#quoteForm').classList.remove('hidden');
+    $('#quoteDone').classList.add('hidden');
+    $('#quoteDone').classList.remove('flex');
+    if (product) $('#quoteForm').elements.product.value = product;
+    if ($('#productModal').getAttribute('data-open') === 'true') closeLayer($('#productModal'));
+    openLayer(d, 'input[name="name"]');
+  }
+
+  function openProduct(key) {
+    var p = PRODUCTS[key];
+    $('#pmBody').innerHTML =
+      '<div class="flex items-start justify-between gap-4 px-6 pt-6">' +
+        '<div><span class="text-[14px] text-muted">' + esc(p.brand) + ' · ' + esc(p.kind) + '</span>' +
+        '<h2 id="pmTitle" class="display mt-1 text-[30px] font-extrabold">' + esc(p.name) + '</h2></div>' +
+        '<button type="button" class="grid h-11 w-11 flex-none place-items-center rounded-full border border-line" data-close-product aria-label="Close"><i data-lucide="x" class="h-5 w-5"></i></button>' +
+      '</div>' +
+      '<div class="mx-6 mt-5 flex h-48 items-center justify-center rounded-[18px] bg-surface2 text-ink"><div class="w-full max-w-[260px]">' + ART[p.art] + '</div></div>' +
+      '<p class="px-6 pt-5 text-[16px] leading-relaxed text-muted">' + esc(p.blurb) + '</p>' +
+      '<dl class="mx-6 mt-5 divide-y divide-line rounded-[16px] border border-line">' +
+        p.specs.map(function (s) { return '<div class="grid gap-1 px-5 py-3.5 sm:grid-cols-[130px_1fr] sm:gap-4"><dt class="text-[14px] font-semibold">' + esc(s[0]) + '</dt><dd class="text-[14px] leading-relaxed text-muted">' + esc(s[1]) + '</dd></div>'; }).join('') +
+      '</dl>' +
+      '<p class="px-6 pt-3 text-[12px] text-muted">Specifications may change; confirm with our team before ordering.</p>' +
+      '<div class="flex flex-wrap gap-3 px-6 pb-7 pt-5">' +
+        '<button type="button" class="inline-flex items-center gap-2 rounded-full bg-accent px-6 py-3.5 text-[15px] font-semibold text-white hover:bg-accent/90" data-open-quote data-quote-product="' + esc(p.brand + ' ' + p.name) + '"><i data-lucide="message-circle" class="h-5 w-5"></i>Ask for price</button>' +
+        '<a href="' + esc(p.link) + '" target="_blank" rel="noopener" class="inline-flex items-center gap-2 rounded-full border border-line px-6 py-3.5 text-[15px] font-medium">Manufacturer page <i data-lucide="external-link" class="h-4 w-4"></i></a>' +
+      '</div>';
+    icons();
+    openLayer($('#productModal'), '[data-close-product]');
+  }
+
+  /* =========================================================
+     ROUTER (hash-based: #home #about #projects #news #contact #privacy)
+     ========================================================= */
+  var PAGES = ['home', 'ndi', 'about', 'projects', 'news', 'contact', 'privacy'];
+  var TITLES = { home: 'Satu Visual Indonesia — NDI®, Broadcast & Pro AV Solutions', ndi: 'NDI® Solutions — Satu Visual Indonesia', about: 'About — Satu Visual Indonesia', projects: 'Projects — Satu Visual Indonesia', news: 'News & Events — Satu Visual Indonesia', contact: 'Contact — Satu Visual Indonesia', privacy: 'Privacy Policy — Satu Visual Indonesia' };
+  var first = true;
+  function route() {
+    var page = (location.hash || '').replace('#', '');
+    if (PAGES.indexOf(page) === -1) page = 'home';
+    $$('.page').forEach(function (s) { s.classList.toggle('is-active', s.getAttribute('data-page') === page); });
+    $$('.nav-link').forEach(function (a) {
+      if (a.getAttribute('href') === '#' + page) a.setAttribute('aria-current', 'page'); else a.removeAttribute('aria-current');
+    });
+    document.title = TITLES[page];
+    $('#mobileNav').classList.add('hidden');
+    $('#menuBtn').setAttribute('aria-expanded', 'false');
+    if (!first) {
+      window.scrollTo(0, 0);
+      var h = $('.page.is-active h1');
+      if (h) { h.setAttribute('tabindex', '-1'); h.focus({ preventScroll: true }); }
+    }
+    first = false;
+  }
+
+  /* =========================================================
+     THEME
+     ========================================================= */
+  function syncThemeButton() {
+    var dark = document.documentElement.getAttribute('data-theme') === 'dark';
+    var btn = $('#themeToggle');
+    btn.setAttribute('aria-label', dark ? 'Switch to light mode' : 'Switch to dark mode');
+    $$('.theme-icon-sun', btn).forEach(function (n) { n.classList.toggle('hidden', !dark); });
+    $$('.theme-icon-moon', btn).forEach(function (n) { n.classList.toggle('hidden', dark); });
+  }
+
+  /* =========================================================
+     INIT
+     ========================================================= */
+  /* Before/after signal-flow diagram: HDMI/SDI baseband vs NDI */
+  function renderSignalFlow(box) {
+    var mode = 'base';
+    var ys = [24, 96, 168, 240];
+    var SRC = ['PTZ camera 1', 'PTZ camera 2', 'PTZ camera 3', 'Lyrics & slides PC'];
+    var OUT = ['Livestream', 'Main screen', 'Overflow room', 'Lobby display'];
+    var NOTES = {
+      base: ['A dedicated cable from every source to the switcher', 'Converters and extenders on long runs', 'Each new screen or room means another cable run', 'Camera power and control wired separately'],
+      ndi: ['One Ethernet cable per camera: video, audio, control, tally and PoE power', 'Every source is available in every room', 'Add cameras or screens by plugging into the network', 'Existing HDMI and SDI gear joins through NDI® encoders']
+    };
+    function node(x, y, label, cls, tcls) {
+      return '<rect x="' + x + '" y="' + y + '" width="160" height="48" rx="12" class="sf-box ' + (cls || '') + '"/>' +
+        '<text x="' + (x + 80) + '" y="' + (y + 29) + '" text-anchor="middle" class="sf-txt ' + (tcls || '') + '">' + esc(label) + '</text>';
+    }
+    function svg() {
+      var ndi = mode === 'ndi', s = '';
+      var inLab = ndi ? ['Ethernet + PoE', 'Ethernet + PoE', 'Ethernet + PoE', 'NDI® from software'] : ['SDI cable', 'SDI cable', 'SDI cable', 'HDMI + extender'];
+      var outLab = ndi ? ['Streamed by the switcher', 'NDI® decoder', 'NDI® decoder', 'NDI® decoder'] : ['Capture card + PC', 'SDI to HDMI converter', 'Extra cable run', 'Extra run + splitter'];
+      ys.forEach(function (y, i) {
+        var cy = y + 24;
+        s += '<path class="sf-line' + (ndi ? ' ndi flow' : '') + '" d="M176 ' + cy + ' C 248 ' + cy + ', 248 156, 320 156"/>';
+        s += '<text class="sf-lab" x="184" y="' + (cy - 8) + '">' + esc(inLab[i]) + '</text>';
+        s += '<path class="sf-line' + (ndi ? ' ndi flow' : (i > 1 ? ' dash' : '')) + '" d="M480 156 C 552 156, 552 ' + cy + ', 624 ' + cy + '"/>';
+        s += '<text class="sf-lab" x="616" y="' + (cy - 8) + '" text-anchor="end">' + esc(outLab[i]) + '</text>';
+        if (ndi && !REDUCE) {
+          s += '<circle r="4" class="sf-packet"><animateMotion dur="2.2s" begin="' + (i * 0.4) + 's" repeatCount="indefinite" path="M176 ' + cy + ' C 248 ' + cy + ', 248 156, 320 156"/></circle>';
+          s += '<circle r="4" class="sf-packet"><animateMotion dur="2.2s" begin="' + (1.1 + i * 0.4) + 's" repeatCount="indefinite" path="M480 156 C 552 156, 552 ' + cy + ', 624 ' + cy + '"/></circle>';
+        }
+      });
+      if (ndi) {
+        s += '<path class="sf-line ndi" d="M400 72 V 132"/><text class="sf-lab" x="408" y="106">NDI®</text>';
+        s += node(320, 24, 'Mix One / Director Plus');
+        s += node(320, 132, 'Network switch (PoE)', 'hub-ndi', 'on-accent');
+      } else {
+        s += node(320, 132, 'Video switcher', 'hub');
+      }
+      SRC.forEach(function (t, i) { s += node(16, ys[i], t); });
+      OUT.forEach(function (t, i) { s += node(624, ys[i], t); });
+      s += '<text class="sf-lab" x="400" y="306" text-anchor="middle">' + (ndi ? 'Any source, any room, on one network' : 'Every new room needs its own cable run') + '</text>';
+      return s;
+    }
+    function draw(focus) {
+      var ndi = mode === 'ndi';
+      box.innerHTML =
+        '<div class="flex flex-col gap-5">' +
+          '<div role="group" aria-label="Compare wiring" class="flex flex-wrap gap-1 self-start rounded-full border border-line bg-surface2 p-1.5">' +
+            '<button type="button" class="tab-btn rounded-full px-5 py-2.5 text-[15px] font-medium text-muted" data-mode="base" aria-pressed="' + !ndi + '">Before: HDMI / SDI</button>' +
+            '<button type="button" class="tab-btn rounded-full px-5 py-2.5 text-[15px] font-medium text-muted" data-mode="ndi" aria-pressed="' + ndi + '">After: NDI®</button>' +
+          '</div>' +
+          '<div class="grid gap-4 lg:grid-cols-12">' +
+            '<div class="tile overflow-x-auto p-4 lg:col-span-8"><svg viewBox="0 0 800 316" class="w-full min-w-[640px]" role="img" aria-label="' + (ndi ? 'NDI system: cameras, a slides PC and displays all connect to one network switch, with the switcher on the same network.' : 'Baseband system: each camera and the slides PC needs its own cable to the video switcher, and each display needs a separate cable run.') + '">' + svg() + '</svg></div>' +
+            '<ul class="tile flex flex-col gap-4 p-7 lg:col-span-4">' +
+              NOTES[mode].map(function (n) {
+                return '<li class="flex gap-3 text-[15px] leading-relaxed"><i data-lucide="' + (ndi ? 'check' : 'minus') + '" class="mt-1 h-4 w-4 flex-none ' + (ndi ? 'text-accentink' : 'text-muted') + '"></i><span class="' + (ndi ? '' : 'text-muted') + '">' + esc(n) + '</span></li>';
+              }).join('') +
+            '</ul>' +
+          '</div>' +
+        '</div>';
+      $$('[data-mode]', box).forEach(function (b) {
+        b.addEventListener('click', function () { mode = b.getAttribute('data-mode'); draw(true); });
+      });
+      icons();
+      if (focus) { var f = $('[data-mode="' + mode + '"]', box); if (f) f.focus(); }
+    }
+    draw(false);
+  }
+  $$('[data-signal-flow]').forEach(function (b) { renderSignalFlow(b); });
+
+  renderHeroTiles();
+  renderTelycam('broadcast');
+  renderVideos();
+  $('#homeProjects').innerHTML = PROJECTS.slice(0, 6).map(projectCard).join('');
+  renderFilters($('#projectFilters'), ['All'].concat(CATEGORIES), renderProjects);
+  renderProjects('All');
+  renderFilters($('#newsFilters'), ['All', 'Article', 'Event'], renderNews);
+  renderNews('All');
+  $$('[data-form-fields]').forEach(function (box, i) { box.innerHTML = fieldsHTML('f' + i); });
+  icons();
+  syncThemeButton();
+  route();
+  window.addEventListener('hashchange', route);
+
+  /* =========================================================
+     MOTION
+     ========================================================= */
+  // Scroll progress line under the header
+  var bar = $('#scrollProgress'), ticking = false;
+  function onScroll() {
+    if (ticking) return; ticking = true;
+    requestAnimationFrame(function () {
+      var h = document.documentElement.scrollHeight - window.innerHeight;
+      bar.style.transform = 'scaleX(' + (h > 0 ? Math.min(1, window.scrollY / h) : 0) + ')';
+      ticking = false;
+    });
+  }
+  window.addEventListener('scroll', onScroll, { passive: true });
+  window.addEventListener('hashchange', function () { setTimeout(onScroll, 50); });
+  onScroll();
+
+  // Hero tiles: release the boot animation so hover tilt can take over
+  $$('.boot > *').forEach(function (el) {
+    el.addEventListener('animationend', function (e) { if (e.target === el && e.animationName === 'powerOn') el.style.animation = 'none'; });
+  });
+
+  // Scroll reveal, staggered within each group
+  if (!REDUCE && 'IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) {
+        if (!en.isIntersecting) return;
+        var el = en.target;
+        el.classList.add('in');
+        io.unobserve(el);
+        setTimeout(function () { el.classList.remove('reveal', 'in'); el.style.transitionDelay = ''; }, 1500);
+      });
+    }, { threshold: 0.12, rootMargin: '0px 0px -6% 0px' });
+    var targets = $$('.page section h1, .page section h2, [data-signal-flow], .page section .tile, .page section ol > li, #videoGrid > div, #newsGrid > *')
+      .filter(function (el) { return !el.closest('.boot') && !(el.parentElement && el.parentElement.closest('[data-signal-flow], .tile')); });
+    targets.forEach(function (el) {
+      var sibs = Array.prototype.filter.call(el.parentElement.children, function (c) { return targets.indexOf(c) !== -1; });
+      el.style.transitionDelay = Math.min(sibs.indexOf(el), 5) * 80 + 'ms';
+      el.classList.add('reveal');
+      io.observe(el);
+    });
+  }
+
+  // Cursor glow on every tile + gentle 3D tilt on hero product tiles
+  if (window.matchMedia && window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
+    document.addEventListener('pointermove', function (e) {
+      var t = e.target.closest && e.target.closest('.tile');
+      if (!t) return;
+      var r = t.getBoundingClientRect();
+      t.style.setProperty('--mx', (e.clientX - r.left) + 'px');
+      t.style.setProperty('--my', (e.clientY - r.top) + 'px');
+      if (!REDUCE && t.hasAttribute('data-hero-product')) {
+        var px = (e.clientX - r.left) / r.width - 0.5, py = (e.clientY - r.top) / r.height - 0.5;
+        t.style.transform = 'perspective(900px) rotateX(' + (-py * 4).toFixed(2) + 'deg) rotateY(' + (px * 5).toFixed(2) + 'deg)';
+      }
+    });
+    $$('[data-hero-product]').forEach(function (t) { t.addEventListener('pointerleave', function () { t.style.transform = ''; }); });
+  }
+
+  // Delegated clicks
+  document.addEventListener('click', function (e) {
+    var q = e.target.closest('[data-open-quote]');
+    if (q) { e.preventDefault(); openQuote(q.getAttribute('data-quote-product') || ''); return; }
+    var p = e.target.closest('[data-product]');
+    if (p) { openProduct(p.getAttribute('data-product')); return; }
+    if (e.target.closest('[data-close-quote]')) { closeLayer($('#quoteDrawer')); return; }
+    if (e.target.closest('[data-close-product]')) { closeLayer($('#productModal')); return; }
+    var tab = e.target.closest('[data-tely-tab]');
+    if (tab) { renderTelycam(tab.getAttribute('data-tely-tab')); }
+  });
+
+  // Keyboard inside dialogs only
+  [$('#quoteDrawer'), $('#productModal')].forEach(function (layer) {
+    layer.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape') closeLayer(layer);
+      if (e.key === 'Tab') trapFocus(layer, e);
+    });
+  });
+
+  // Tabs: arrow-key navigation
+  $$('[data-tely-tab]').forEach(function (b, i, all) {
+    b.addEventListener('keydown', function (e) {
+      if (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') return;
+      var n = all[(i + (e.key === 'ArrowRight' ? 1 : all.length - 1)) % all.length];
+      n.focus(); renderTelycam(n.getAttribute('data-tely-tab'));
+    });
+  });
+
+  // Theme toggle
+  $('#themeToggle').addEventListener('click', function () {
+    var next = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+    document.documentElement.setAttribute('data-theme', next);
+    try { localStorage.setItem('sv-theme', next); } catch (err) {}
+    syncThemeButton();
+  });
+
+  // Mobile menu
+  $('#menuBtn').addEventListener('click', function () {
+    var nav = $('#mobileNav');
+    var open = nav.classList.toggle('hidden') === false;
+    this.setAttribute('aria-expanded', String(open));
+  });
+
+  // Quote drawer submit → WhatsApp
+  $('#quoteForm').addEventListener('submit', function (e) {
+    e.preventDefault();
+    var d = validate(this); if (!d) return;
+    var url = waLink(d);
+    $('#quoteFallback').href = url;
+    window.open(url, '_blank', 'noopener');
+    this.classList.add('hidden');
+    $('#quoteDone').classList.remove('hidden');
+    $('#quoteDone').classList.add('flex');
+    $('#quoteFallback').focus();
+  });
+
+  // Contact page submit → WhatsApp
+  $('#contactForm').addEventListener('submit', function (e) {
+    e.preventDefault();
+    var d = validate(this); if (!d) return;
+    window.open(waLink(d), '_blank', 'noopener');
+    var box = $('.form-error', this);
+    box.textContent = 'WhatsApp is opening with your message. Press send there to deliver it.';
+    box.classList.remove('hidden', 'text-tally');
+    box.classList.add('text-accentink');
+  });
+
+  // Newsletter (connect to your email provider when hosting)
+  $('#newsletterForm').addEventListener('submit', function (e) {
+    e.preventDefault();
+    var v = $('#nlEmail').value.trim();
+    $('#nlMsg').textContent = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v) ? 'Subscribed. Watch your inbox for our next update.' : 'Enter a valid email address to subscribe.';
+  });
+})();
+</script>
+</body>
+</html>
